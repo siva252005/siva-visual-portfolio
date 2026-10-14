@@ -1396,18 +1396,63 @@ video {
   position: relative;
   background-color: var(--bg-main);
   border-top: 1px solid var(--border-subtle);
+  padding-top: clamp(1rem, 2vw, 1.5rem);
+}
+
+.before-after-section .section-header {
+  margin-bottom: clamp(1.2rem, 1.8vw, 1.6rem);
+  max-width: 520px;
+}
+
+.before-after-section .eyebrow {
+  margin-bottom: 4px;
+}
+
+.before-after-section .section-title {
+  font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.before-after-section .section-subtitle {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  margin-bottom: 0;
 }
 
 .before-after-container {
+  display: grid;
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  gap: clamp(var(--space-lg), 2.8vw, var(--space-2xl));
+  align-items: start;
+}
+
+/* Left Content Panel (~42% width) */
+.before-after-panel {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
+  gap: 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Right Stage Wrapper (~58% width) */
+.before-after-stage-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding-top: clamp(2.4rem, 3.2vw, 3rem);
 }
 
 .comparison-stage {
   position: relative;
   width: 100%;
-  max-width: 610px;
+  max-width: 440px;
   margin: 0 auto;
   min-height: 250px;
   border-radius: var(--radius-xl);
@@ -1464,10 +1509,12 @@ video {
 
 .comparison-img-clipped {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  object-fit: cover;
+  object-position: center;
   pointer-events: none;
   user-select: none;
 }
@@ -1642,42 +1689,28 @@ video {
   border-right: 1.5px solid var(--color-primary);
 }
 
-/* Project Footer & Selector */
-.before-after-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-xl);
-  flex-wrap: wrap;
-  border-top: 1px solid var(--border-subtle);
-  padding-top: var(--space-xl);
-}
-
+/* Content Panel Info & Typography */
 .before-after-info {
-  max-width: 600px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  margin-bottom: 18px;
 }
 
 .before-after-meta {
   display: flex;
-  align-items: baseline;
-  gap: var(--space-sm);
+  align-items: center;
+  gap: 6px;
   font-size: var(--font-size-xs);
   text-transform: uppercase;
-}
-
-.before-after-number {
-  font-weight: var(--font-weight-extrabold);
-  color: var(--color-primary);
-  letter-spacing: 0.1em;
+  margin-bottom: 2px;
 }
 
 .before-after-category {
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  letter-spacing: var(--letter-spacing-wide);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  letter-spacing: var(--letter-spacing-eyebrow);
 }
 
 .before-after-dot {
@@ -1685,58 +1718,76 @@ video {
 }
 
 .before-after-tag {
-  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
   letter-spacing: var(--letter-spacing-wide);
 }
 
 .before-after-title {
-  font-size: var(--font-size-h2);
+  font-size: clamp(1.35rem, 1.8vw, 1.65rem);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  margin: 0;
 }
 
 .before-after-desc {
-  font-size: var(--font-size-sm);
+  font-size: 0.875rem;
   color: var(--text-secondary);
   line-height: 1.6;
+  margin: 0;
+  max-width: 440px;
 }
 
+/* Vertically Stacked Transformation Selection Controls */
 .before-after-selector {
   display: flex;
-  gap: var(--space-sm);
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 0;
 }
 
 .selector-btn {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  padding: 10px 18px;
-  background-color: var(--bg-card);
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 18px;
+  background-color: rgba(17, 24, 23, 0.65);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-base);
   text-align: left;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .selector-btn:hover {
   border-color: var(--border-primary);
-  transform: translateY(-2px);
+  background-color: var(--bg-card-hover);
+  transform: translateX(3px);
 }
 
 .selector-btn.active {
   border-color: var(--color-primary);
-  background-color: rgba(0, 168, 150, 0.08);
-  box-shadow: var(--glow-subtle);
+  background-color: rgba(0, 168, 150, 0.10);
+  box-shadow: 0 0 16px rgba(0, 168, 150, 0.12);
+  transform: translateX(3px);
 }
 
 .selector-num {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-extrabold);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-bold);
   color: var(--text-muted);
   transition: color var(--transition-fast);
+  font-family: var(--font-family-mono);
+  letter-spacing: 0.05em;
+  min-width: 22px;
 }
 
 .selector-btn.active .selector-num {
@@ -1744,15 +1795,31 @@ video {
 }
 
 .selector-label {
-  font-size: 0.6875rem;
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--letter-spacing-wide);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.01em;
   color: var(--text-secondary);
-  text-transform: uppercase;
+  transition: color var(--transition-fast);
+  flex: 1;
+}
+
+.selector-btn:hover .selector-label {
+  color: var(--text-primary);
 }
 
 .selector-btn.active .selector-label {
   color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.selector-btn.active::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
@@ -4759,6 +4826,20 @@ video {
 
 
   /* Before / After Tablet */
+  .before-after-section .section-header {
+    margin-bottom: var(--space-md);
+  }
+
+  .before-after-container {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: var(--space-lg);
+    align-items: start;
+  }
+
+  .before-after-stage-wrapper {
+    padding-top: clamp(2rem, 3vw, 2.5rem);
+  }
+
   .comparison-stage {
     max-width: 100%;
   }
@@ -5033,6 +5114,40 @@ video {
   }
 
   /* Before / After Mobile */
+  .before-after-section .section-header {
+    margin-bottom: var(--space-md);
+  }
+
+  .before-after-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: stretch;
+  }
+
+  .before-after-stage-wrapper {
+    padding-top: 0;
+  }
+
+  .before-after-panel {
+    gap: 0;
+  }
+
+  .before-after-info {
+    margin-bottom: 14px;
+  }
+
+  .before-after-selector {
+    width: 100%;
+    gap: 8px;
+    margin-top: 0;
+  }
+
+  .selector-btn {
+    width: 100%;
+    padding: 10px 14px;
+    min-height: 44px;
+  }
+
   .comparison-stage {
     max-width: 100%;
   }
@@ -5043,24 +5158,6 @@ video {
 
   .placeholder-title {
     font-size: var(--font-size-h3);
-  }
-
-  .before-after-footer {
-    flex-direction: column;
-    gap: var(--space-lg);
-  }
-
-  .before-after-selector {
-    width: 100%;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .selector-btn {
-    flex: 1;
-    min-width: 100px;
   }
 
   /* Video Editing Mobile */

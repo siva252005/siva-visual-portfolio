@@ -84,116 +84,26 @@ function BeforeAfter() {
   return (
     <section id="before-after" className="section before-after-section">
       <div className="container">
-        {/* Section Header */}
-        <div className="section-header">
-          <div className="eyebrow">
-            <span>THE TRANSFORMATION</span>
-          </div>
-          <h2 className="section-title">
-            RAW IN.<br />
-            <span className="text-accent">REFINED OUT.</span>
-          </h2>
-          <p className="section-subtitle">
-            See the difference thoughtful color, light and detail can make.
-          </p>
-        </div>
-
-        {/* Interactive Comparison Canvas */}
+        {/* Two-Column Transformation Layout */}
         <div className="before-after-container">
-          <div
-            ref={containerRef}
-            className={`comparison-stage ${isDragging ? 'is-dragging' : ''}`}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={handlePointerUp}
-            onKeyDown={handleKeyDown}
-            role="slider"
-            tabIndex={0}
-            aria-label="Before and after comparison slider"
-            aria-orientation="horizontal"
-            aria-valuenow={Math.round(sliderPosition)}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuetext={`${Math.round(sliderPosition)}% reveal`}
-          >
-            {/* Layer 1: AFTER (Base Underneath Layer) */}
-            <div className="comparison-layer comparison-layer-after">
-              {currentProject.after ? (
-                <img
-                  src={currentProject.after}
-                  alt={`${currentProject.title} Refined`}
-                  className="comparison-img comparison-img-base"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-              ) : (
-                <div className="comparison-placeholder placeholder-after">
-                  <div className="placeholder-center">
-                    <span className="placeholder-title">{currentProject.title}</span>
-                    <span className="placeholder-status text-accent">REFINED COLOR &amp; LIGHT</span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Layer 2: BEFORE (Clipped Top Layer) */}
-            <div
-              className="comparison-layer comparison-layer-before"
-              style={{
-                clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)`,
-              }}
-            >
-              {currentProject.before ? (
-                <img
-                  src={currentProject.before}
-                  alt={`${currentProject.title} Raw`}
-                  className="comparison-img comparison-img-clipped"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-              ) : (
-                <div className="comparison-placeholder placeholder-before">
-                  <div className="placeholder-center">
-                    <span className="placeholder-title">{currentProject.title}</span>
-                    <span className="placeholder-status">FLAT RAW PROFILE</span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Floating Badges */}
-            <div className="comparison-badges" aria-hidden="true">
-              <span className="placeholder-badge badge-before">BEFORE · RAW</span>
-              <span className="placeholder-badge badge-after">AFTER · REFINED</span>
-            </div>
-
-            {/* Draggable Vertical Divider Handle */}
-            <div
-              className="comparison-handle-line"
-              style={{ left: `${sliderPosition}%` }}
-              aria-hidden="true"
-            >
-              <div className="comparison-handle-grip">
-                <span className="grip-arrow">◀</span>
-                <span className="grip-arrow">▶</span>
+          {/* Left Content Panel (~42% width) */}
+          <div className="before-after-panel">
+            {/* Section Header */}
+            <div className="section-header before-after-header">
+              <div className="eyebrow">
+                <span>THE TRANSFORMATION</span>
               </div>
+              <h2 className="section-title">
+                RAW IN.<br />
+                <span className="text-accent">REFINED OUT.</span>
+              </h2>
+              <p className="section-subtitle">
+                See the difference thoughtful color, light and detail can make.
+              </p>
             </div>
 
-            {/* Corner Editorial Accents */}
-            <span className="comparison-corner comparison-corner-tl" aria-hidden="true"></span>
-            <span className="comparison-corner comparison-corner-tr" aria-hidden="true"></span>
-            <span className="comparison-corner comparison-corner-bl" aria-hidden="true"></span>
-            <span className="comparison-corner comparison-corner-br" aria-hidden="true"></span>
-          </div>
-
-          {/* Project Details & Switcher */}
-          <div className="before-after-footer">
             <div className="before-after-info">
               <div className="before-after-meta">
-                <span className="before-after-number">{currentProject.number}</span>
                 <span className="before-after-category">{currentProject.category}</span>
                 <span className="before-after-dot">·</span>
                 <span className="before-after-tag">{currentProject.tag}</span>
@@ -202,7 +112,7 @@ function BeforeAfter() {
               <p className="before-after-desc">{currentProject.description}</p>
             </div>
 
-            {/* Minimal Project Selector */}
+            {/* Vertically Stacked Transformation Selection Controls */}
             <div className="before-after-selector" role="tablist" aria-label="Comparison projects">
               {beforeAfterProjects.map((project, idx) => (
                 <button
@@ -220,6 +130,98 @@ function BeforeAfter() {
                   <span className="selector-label">{project.title}</span>
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Right Image Stage (~58% width) */}
+          <div className="before-after-stage-wrapper">
+            <div
+              ref={containerRef}
+              className={`comparison-stage ${isDragging ? 'is-dragging' : ''}`}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
+              onKeyDown={handleKeyDown}
+              role="slider"
+              tabIndex={0}
+              aria-label="Before and after comparison slider"
+              aria-orientation="horizontal"
+              aria-valuenow={Math.round(sliderPosition)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuetext={`${Math.round(sliderPosition)}% reveal`}
+            >
+              {/* Layer 1: AFTER (Base Underneath Layer) */}
+              <div className="comparison-layer comparison-layer-after">
+                {currentProject.after ? (
+                  <img
+                    src={currentProject.after}
+                    alt={`${currentProject.title} Refined`}
+                    className="comparison-img comparison-img-base"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                ) : (
+                  <div className="comparison-placeholder placeholder-after">
+                    <div className="placeholder-center">
+                      <span className="placeholder-title">{currentProject.title}</span>
+                      <span className="placeholder-status text-accent">REFINED COLOR &amp; LIGHT</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Layer 2: BEFORE (Clipped Top Layer) */}
+              <div
+                className="comparison-layer comparison-layer-before"
+                style={{
+                  clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)`,
+                }}
+              >
+                {currentProject.before ? (
+                  <img
+                    src={currentProject.before}
+                    alt={`${currentProject.title} Raw`}
+                    className="comparison-img comparison-img-clipped"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                ) : (
+                  <div className="comparison-placeholder placeholder-before">
+                    <div className="placeholder-center">
+                      <span className="placeholder-title">{currentProject.title}</span>
+                      <span className="placeholder-status">FLAT RAW PROFILE</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Floating Badges */}
+              <div className="comparison-badges" aria-hidden="true">
+                <span className="placeholder-badge badge-before">BEFORE · RAW</span>
+                <span className="placeholder-badge badge-after">AFTER · REFINED</span>
+              </div>
+
+              {/* Draggable Vertical Divider Handle */}
+              <div
+                className="comparison-handle-line"
+                style={{ left: `${sliderPosition}%` }}
+                aria-hidden="true"
+              >
+                <div className="comparison-handle-grip">
+                  <span className="grip-arrow">◀</span>
+                  <span className="grip-arrow">▶</span>
+                </div>
+              </div>
+
+              {/* Corner Editorial Accents */}
+              <span className="comparison-corner comparison-corner-tl" aria-hidden="true"></span>
+              <span className="comparison-corner comparison-corner-tr" aria-hidden="true"></span>
+              <span className="comparison-corner comparison-corner-bl" aria-hidden="true"></span>
+              <span className="comparison-corner comparison-corner-br" aria-hidden="true"></span>
             </div>
           </div>
         </div>
