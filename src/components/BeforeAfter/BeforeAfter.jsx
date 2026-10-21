@@ -7,15 +7,34 @@ function BeforeAfter() {
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
   const rafIdRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const sliderPosRef = useRef(50);
 
   const currentProject = beforeAfterProjects[currentIndex] || beforeAfterProjects[0];
 
-  const updatePosition = useCallback((clientX) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    setSliderPosition(percentage);
+  // Helper to apply position directly to DOM for zero React re-renders during dragging
+  const applyPosition = useCallback((percentage) => {
+    sliderPosRef.current = percentage;
+    if (containerRef.current) {
+      containerRef.current.style.setProperty('--slider-pos', `${percentage}%`);
+      containerRef.current.setAttribute('aria-valuenow', Math.round(percentage));
+      containerRef.current.setAttribute('aria-valuetext', `${Math.round(percentage)}% reveal`);
+    }
+  }, []);
+
+  // Prefetch inactive transformations on button hover/focus
+  const prefetchProject = useCallback((project) => {
+    if (!project) return;
+    const targetAfter = project.afterWebp || project.after;
+    const targetBefore = project.beforeWebp || project.before;
+    if (targetAfter) {
+      const imgA = new Image();
+      imgA.src = targetAfter;
+    }
+    if (targetBefore) {
+      const imgB = new Image();
+      imgB.src = targetBefore;
+    }
   }, []);
 
   // Cleanup any pending animation frame on unmount
@@ -28,35 +47,44 @@ function BeforeAfter() {
   }, []);
 
   const handlePointerDown = (e) => {
+    isDraggingRef.current = true;
     setIsDragging(true);
     if (rafIdRef.current) {
       cancelAnimationFrame(rafIdRef.current);
       rafIdRef.current = null;
     }
-    updatePosition(e.clientX);
     if (containerRef.current) {
       containerRef.current.setPointerCapture(e.pointerId);
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      applyPosition(percentage);
     }
   };
 
   const handlePointerMove = (e) => {
-    if (!isDragging) return;
+    if (!isDraggingRef.current) return;
     const clientX = e.clientX;
-    if (rafIdRef.current) {
-      cancelAnimationFrame(rafIdRef.current);
-    }
+    if (rafIdRef.current) return; // Drop frame if previous is still queued
     rafIdRef.current = requestAnimationFrame(() => {
-      updatePosition(clientX);
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      applyPosition(percentage);
       rafIdRef.current = null;
     });
   };
 
   const handlePointerUp = (e) => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
     setIsDragging(false);
     if (rafIdRef.current) {
       cancelAnimationFrame(rafIdRef.current);
       rafIdRef.current = null;
     }
+    setSliderPosition(sliderPosRef.current);
     if (containerRef.current && containerRef.current.hasPointerCapture(e.pointerId)) {
       containerRef.current.releasePointerCapture(e.pointerId);
     }
@@ -66,19 +94,31 @@ function BeforeAfter() {
     let step = 5;
     if (e.shiftKey) step = 15;
 
+    let newPos = sliderPosRef.current;
     if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
       e.preventDefault();
-      setSliderPosition((prev) => Math.max(0, prev - step));
+      newPos = Math.max(0, newPos - step);
     } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
       e.preventDefault();
-      setSliderPosition((prev) => Math.min(100, prev + step));
+      newPos = Math.min(100, newPos + step);
     } else if (e.key === 'Home') {
       e.preventDefault();
-      setSliderPosition(0);
+      newPos = 0;
     } else if (e.key === 'End') {
       e.preventDefault();
-      setSliderPosition(100);
+      newPos = 100;
+    } else {
+      return;
     }
+
+    applyPosition(newPos);
+    setSliderPosition(newPos);
+  };
+
+  const handleSelectProject = (idx) => {
+    setCurrentIndex(idx);
+    applyPosition(50);
+    setSliderPosition(50);
   };
 
   return (
@@ -121,10 +161,9 @@ function BeforeAfter() {
                   role="tab"
                   aria-selected={currentIndex === idx}
                   className={`selector-btn ${currentIndex === idx ? 'active' : ''}`}
-                  onClick={() => {
-                    setCurrentIndex(idx);
-                    setSliderPosition(50);
-                  }}
+                  onClick={() => handleSelectProject(idx)}
+                  onMouseEnter={() => prefetchProject(project)}
+                  onFocus={() => prefetchProject(project)}
                 >
                   <span className="selector-num">{project.number}</span>
                   <span className="selector-label">{project.title}</span>
@@ -138,6 +177,10 @@ function BeforeAfter() {
             <div
               ref={containerRef}
               className={`comparison-stage ${isDragging ? 'is-dragging' : ''}`}
+              style={{
+                aspectRatio: currentProject.aspectRatio || '854 / 1280',
+                '--slider-pos': `${sliderPosition}%`,
+              }}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
@@ -155,14 +198,23 @@ function BeforeAfter() {
               {/* Layer 1: AFTER (Base Underneath Layer) */}
               <div className="comparison-layer comparison-layer-after">
                 {currentProject.after ? (
-                  <img
-                    src={currentProject.after}
-                    alt={`${currentProject.title} Refined`}
-                    className="comparison-img comparison-img-base"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
+                  <picture>
+                    {currentProject.afterWebp && (
+                      <source srcSet={currentProject.afterWebp} type="image/webp" />
+                    )}
+                    <img
+                      src={currentProject.after}
+                      alt={`${currentProject.title} Refined`}
+                      className="comparison-img comparison-img-base"
+                      loading="lazy"
+                      decoding="async"
+                      width={currentProject.width || 854}
+                      height={currentProject.height || 1280}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </picture>
                 ) : (
                   <div className="comparison-placeholder placeholder-after">
                     <div className="placeholder-center">
@@ -177,18 +229,27 @@ function BeforeAfter() {
               <div
                 className="comparison-layer comparison-layer-before"
                 style={{
-                  clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)`,
+                  clipPath: `polygon(0 0, var(--slider-pos, ${sliderPosition}%) 0, var(--slider-pos, ${sliderPosition}%) 100%, 0 100%)`,
                 }}
               >
                 {currentProject.before ? (
-                  <img
-                    src={currentProject.before}
-                    alt={`${currentProject.title} Raw`}
-                    className="comparison-img comparison-img-clipped"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
+                  <picture>
+                    {currentProject.beforeWebp && (
+                      <source srcSet={currentProject.beforeWebp} type="image/webp" />
+                    )}
+                    <img
+                      src={currentProject.before}
+                      alt={`${currentProject.title} Raw`}
+                      className="comparison-img comparison-img-clipped"
+                      loading="lazy"
+                      decoding="async"
+                      width={currentProject.width || 854}
+                      height={currentProject.height || 1280}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </picture>
                 ) : (
                   <div className="comparison-placeholder placeholder-before">
                     <div className="placeholder-center">
@@ -208,7 +269,7 @@ function BeforeAfter() {
               {/* Draggable Vertical Divider Handle */}
               <div
                 className="comparison-handle-line"
-                style={{ left: `${sliderPosition}%` }}
+                style={{ left: `var(--slider-pos, ${sliderPosition}%)` }}
                 aria-hidden="true"
               >
                 <div className="comparison-handle-grip">

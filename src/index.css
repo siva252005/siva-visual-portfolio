@@ -1464,6 +1464,7 @@ video {
   user-select: none;
   touch-action: none;
   transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  --slider-pos: 50%;
 }
 
 .comparison-stage:hover,
@@ -1496,6 +1497,7 @@ video {
   height: 100%;
   overflow: hidden;
   z-index: 2;
+  clip-path: polygon(0 0, var(--slider-pos, 50%) 0, var(--slider-pos, 50%) 100%, 0 100%);
   will-change: clip-path;
 }
 
@@ -1616,6 +1618,8 @@ video {
   z-index: 10;
   pointer-events: none;
   transform: translateX(-50%);
+  left: var(--slider-pos, 50%);
+  will-change: left;
 }
 
 .comparison-handle-grip {

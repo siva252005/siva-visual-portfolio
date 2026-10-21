@@ -68,8 +68,8 @@ export const videos = [
     title: "Sangeeth Celebration",
     category: "Event / Wedding",
     video: "/assets/videos/sangeeth.mp4",
-    thumbnail: "/assets/images/videos/sangeeth.png",
-    poster: "/assets/images/videos/sangeeth.png",
+    thumbnail: "/assets/images/videos/sangeeth.webp",
+    poster: "/assets/images/videos/sangeeth.webp",
     aspect: "9:16"
   },
   {
@@ -77,8 +77,8 @@ export const videos = [
     title: "Beautician Reel",
     category: "Beauty / Promotional",
     video: "/assets/videos/beautician.mp4",
-    thumbnail: "/assets/images/videos/beautician.png",
-    poster: "/assets/images/videos/beautician.png",
+    thumbnail: "/assets/images/videos/beautician.webp",
+    poster: "/assets/images/videos/beautician.webp",
     aspect: "9:16"
   }
 ];

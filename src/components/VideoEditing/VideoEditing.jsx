@@ -120,15 +120,18 @@ function VideoCard({
               muted={!isUnmuted}
               loop
               playsInline
-              preload="metadata"
+              preload="none"
               poster={item.thumbnail || item.poster || undefined}
               onError={() => setVideoError(true)}
             >
-              <source
-                src={videoSrc}
-                type={videoSrc && videoSrc.toLowerCase().endsWith('.mov') ? 'video/quicktime' : 'video/mp4'}
-              />
-              <source src={videoSrc} type="video/mp4" />
+              {videoSrc && videoSrc.toLowerCase().endsWith('.mov') ? (
+                <>
+                  <source src={videoSrc} type="video/quicktime" />
+                  <source src={videoSrc} type="video/mp4" />
+                </>
+              ) : (
+                <source src={videoSrc} type="video/mp4" />
+              )}
               Your browser does not support the video tag.
             </video>
 
@@ -476,16 +479,14 @@ function VideoEditing() {
                   poster={selectedVideo.thumbnail || selectedVideo.poster || undefined}
                   onError={() => setModalError(true)}
                 >
-                  <source
-                    src={getVideoSrc(selectedVideo.video)}
-                    type={selectedVideo.video && selectedVideo.video.toLowerCase().endsWith('.mov') ? 'video/quicktime' : 'video/mp4'}
-                    onError={() => setModalError(true)}
-                  />
-                  <source
-                    src={getVideoSrc(selectedVideo.video)}
-                    type="video/mp4"
-                    onError={() => setModalError(true)}
-                  />
+                  {selectedVideo.video && selectedVideo.video.toLowerCase().endsWith('.mov') ? (
+                    <>
+                      <source src={getVideoSrc(selectedVideo.video)} type="video/quicktime" />
+                      <source src={getVideoSrc(selectedVideo.video)} type="video/mp4" />
+                    </>
+                  ) : (
+                    <source src={getVideoSrc(selectedVideo.video)} type="video/mp4" />
+                  )}
                   Your browser does not support the video tag.
                 </video>
               </div>
