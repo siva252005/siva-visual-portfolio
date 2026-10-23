@@ -33,7 +33,10 @@ const about = {
   ],
   location: "COIMBATORE, INDIA",
   availability: "AVAILABLE FOR SELECT PROJECTS",
-  image: "/assets/images/profile/1757828030248.jpeg"
+  image: "/assets/images/profile/1757828030248.jpeg",
+  imageWebp: "/assets/images/profile/1757828030248.webp",
+  imageSrcSet: "/assets/images/profile/1757828030248-340w.webp 340w, /assets/images/profile/1757828030248-680w.webp 680w, /assets/images/profile/1757828030248-1020w.webp 1020w",
+  imageSizes: "(max-width: 640px) 340px, 340px"
 };
 
 export default about;

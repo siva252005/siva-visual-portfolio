@@ -89,6 +89,8 @@ function VideoCard({
               src={item.thumbnail || item.poster}
               alt={item.title}
               className="video-card-preview"
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <div className="video-card-error-fallback" role="alert">

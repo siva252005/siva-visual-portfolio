@@ -12,20 +12,36 @@ function About() {
             <div className="about-image-layout">
               {/* Main Large Vertical Portrait (9:16) */}
               <div className="about-image-wrapper">
-                <img
-                  src={about.image}
-                  alt="Siva — visual artist and editor"
-                  className="about-profile-img"
-                  loading="lazy"
-                  onError={(e) => {
-                    if (!e.target.dataset.fallbackTried) {
-                      e.target.dataset.fallbackTried = 'true';
-                      e.target.src = '/assets/images/profile/1757828030248.jpg';
-                    } else {
-                      e.target.style.display = 'none';
-                    }
-                  }}
-                />
+                <picture className="about-profile-picture">
+                  {about.imageSrcSet ? (
+                    <source
+                      type="image/webp"
+                      srcSet={about.imageSrcSet}
+                      sizes={about.imageSizes || '(max-width: 640px) 340px, 340px'}
+                    />
+                  ) : about.imageWebp ? (
+                    <source type="image/webp" srcSet={about.imageWebp} />
+                  ) : null}
+                  <img
+                    src={about.image}
+                    alt="Siva — visual artist and editor"
+                    className="about-profile-img"
+                    width="340"
+                    height="604"
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      if (!e.target.dataset.fallbackTried) {
+                        e.target.dataset.fallbackTried = 'true';
+                        e.target.src = '/assets/images/profile/1757828030248.jpg';
+                      } else {
+                        const target = e.currentTarget || e.target;
+                        const parent = target.closest('picture') || target;
+                        parent.style.display = 'none';
+                      }
+                    }}
+                  />
+                </picture>
 
                 {/* Ambient Canvas Placeholder (visible if image unavailable) */}
                 <div className="about-placeholder" aria-hidden="true">
@@ -43,20 +59,36 @@ function About() {
 
               {/* Smaller Overlapping Portrait Image at Bottom-Right Corner */}
               <div className="about-image-overlap" aria-hidden="true">
-                <img
-                  src={about.image}
-                  alt=""
-                  className="about-overlap-img"
-                  loading="lazy"
-                  onError={(e) => {
-                    if (!e.target.dataset.fallbackTried) {
-                      e.target.dataset.fallbackTried = 'true';
-                      e.target.src = '/assets/images/profile/1757828030248.jpg';
-                    } else {
-                      e.target.style.display = 'none';
-                    }
-                  }}
-                />
+                <picture className="about-overlap-picture">
+                  {about.imageSrcSet ? (
+                    <source
+                      type="image/webp"
+                      srcSet={about.imageSrcSet}
+                      sizes={about.imageSizes || '(max-width: 640px) 340px, 340px'}
+                    />
+                  ) : about.imageWebp ? (
+                    <source type="image/webp" srcSet={about.imageWebp} />
+                  ) : null}
+                  <img
+                    src={about.image}
+                    alt=""
+                    className="about-overlap-img"
+                    width="125"
+                    height="222"
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      if (!e.target.dataset.fallbackTried) {
+                        e.target.dataset.fallbackTried = 'true';
+                        e.target.src = '/assets/images/profile/1757828030248.jpg';
+                      } else {
+                        const target = e.currentTarget || e.target;
+                        const parent = target.closest('picture') || target;
+                        parent.style.display = 'none';
+                      }
+                    }}
+                  />
+                </picture>
               </div>
             </div>
           </div>

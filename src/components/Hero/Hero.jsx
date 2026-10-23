@@ -60,16 +60,34 @@ function Hero() {
           <div className="hero-visual-wrapper">
             <div className="hero-visual-card">
               <div className="hero-visual-frame">
-                {/* Image slot ready for assets/images/hero/ - renders only when asset is connected */}
+                {/* Image slot with optimized responsive WebP and eager loading priority */}
                 {heroData.heroImage ? (
-                  <img
-                    src={heroData.heroImage}
-                    alt="Siva Creative Visual Showcase"
-                    className="hero-visual-img"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
+                  <picture className="hero-visual-picture">
+                    {heroData.heroImageSrcSet ? (
+                      <source
+                        type="image/webp"
+                        srcSet={heroData.heroImageSrcSet}
+                        sizes={heroData.heroImageSizes || '(max-width: 640px) 420px, (max-width: 1024px) 480px, 520px'}
+                      />
+                    ) : heroData.heroImageWebp ? (
+                      <source type="image/webp" srcSet={heroData.heroImageWebp} />
+                    ) : null}
+                    <img
+                      src={heroData.heroImage}
+                      alt="Siva Creative Visual Showcase"
+                      className="hero-visual-img"
+                      width="480"
+                      height="600"
+                      loading="eager"
+                      fetchpriority="high"
+                      decoding="async"
+                      onError={(e) => {
+                        const target = e.currentTarget || e.target;
+                        const parent = target.closest('picture') || target;
+                        parent.style.display = 'none';
+                      }}
+                    />
+                  </picture>
                 ) : null}
                 
                 {/* Cinematic ambient framing overlay */}

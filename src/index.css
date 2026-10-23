@@ -708,6 +708,15 @@ video {
   background-size: 24px 24px, 100% 100%;
 }
 
+.hero-visual-picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: block;
+}
+
 .hero-visual-img {
   position: absolute;
   inset: 0;
@@ -715,6 +724,7 @@ video {
   height: 100%;
   object-fit: cover;
   z-index: 1;
+  display: block;
 }
 
 .hero-visual-overlay {
@@ -1201,9 +1211,17 @@ video {
   border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
-  cursor: default;
+  cursor: pointer;
   user-select: none;
   box-sizing: border-box;
+  outline: none;
+}
+
+.photo-card:focus-visible .photo-frame {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-card-hover), var(--glow-hover);
 }
 
 /* Row 4: Full Available Gallery Width Panoramic Banner */
@@ -1302,13 +1320,41 @@ video {
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: var(--space-md) var(--space-lg);
   opacity: 0;
   transform: translateY(4px);
   transition: opacity var(--transition-base), transform var(--transition-base);
   pointer-events: none;
   box-sizing: border-box;
+}
+
+.photo-overlay-top {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.photo-overlay-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(17, 24, 23, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateY(-4px) scale(0.9);
+  transition: all var(--transition-base);
+}
+
+.photo-card:hover .photo-overlay-expand-btn {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .photo-card:hover .photo-overlay {
@@ -1387,6 +1433,241 @@ video {
   right: 8px;
   border-bottom: 1px solid var(--color-primary);
   border-right: 1px solid var(--color-primary);
+}
+
+/* ==========================================================================
+   PHOTO LIGHTBOX / IMMERSIVE VIEWER STYLING
+   ========================================================================== */
+.photo-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(4, 6, 6, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  animation: photoModalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+@keyframes photoModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Discreet Close Button in Top-Right Corner */
+.photo-modal-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(17, 24, 23, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2010;
+  padding: 0;
+  transition: all var(--transition-fast);
+}
+
+.photo-modal-close-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(0, 168, 150, 0.4);
+}
+
+.photo-modal-close-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Modal Content Container - Photo Frame */
+/* Lightbox Viewer Stage - Centered Frame with Flanking Navigation Buttons */
+.photo-modal-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2.5vw, 32px);
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+}
+
+/* Modal Content Container - Photo Frame */
+.photo-modal-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
+  max-width: min(calc(94vw - 140px), 1300px);
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 32px rgba(0, 168, 150, 0.2);
+  border: 1px solid var(--border-primary);
+  animation: photoModalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  flex-shrink: 1;
+}
+
+@keyframes photoModalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Media Wrapper */
+.photo-modal-media-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #040606;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.photo-modal-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(calc(94vw - 140px), 1300px);
+  max-height: calc(100vh - 64px);
+  max-height: calc(100dvh - 64px);
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  animation: photoImageFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes photoImageFadeIn {
+  from {
+    opacity: 0.65;
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Navigation Buttons (Previous & Next) */
+.photo-modal-nav-btn {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(17, 24, 23, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2010;
+  padding: 0;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  user-select: none;
+}
+
+.photo-modal-nav-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: scale(1.08);
+  box-shadow: 0 0 18px rgba(0, 168, 150, 0.45);
+}
+
+.photo-modal-nav-btn:active {
+  transform: scale(0.96);
+}
+
+.photo-modal-nav-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.photo-modal-nav-btn svg {
+  transition: transform var(--transition-fast);
+}
+
+.photo-modal-nav-prev:hover svg {
+  transform: translateX(-2px);
+}
+
+.photo-modal-nav-next:hover svg {
+  transform: translateX(2px);
+}
+
+.photo-modal-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Error Fallback in Modal */
+.photo-modal-error-fallback {
+  width: 360px;
+  max-width: 85vw;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  background: radial-gradient(circle at 50% 50%, rgba(0, 168, 150, 0.08) 0%, rgba(13, 18, 17, 0.95) 100%);
+  background-color: var(--bg-card);
+  text-align: center;
+  gap: var(--space-sm);
+}
+
+.photo-error-icon {
+  color: var(--color-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.photo-error-text {
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.photo-error-subtext {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 /* ==========================================================================
@@ -2889,6 +3170,14 @@ video {
   transform: translateY(-4px);
 }
 
+.about-profile-picture {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .about-profile-img {
   position: relative;
   z-index: 2;
@@ -2924,6 +3213,13 @@ video {
   transform: translateY(-3px) scale(1.02);
   border-color: rgba(0, 168, 150, 0.95);
   box-shadow: 0 18px 40px -6px rgba(0, 0, 0, 0.95), 0 0 30px -4px rgba(0, 168, 150, 0.45);
+}
+
+.about-overlap-picture {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .about-overlap-img {
@@ -5115,6 +5411,53 @@ video {
 
   .photo-overlay-tag {
     font-size: 0.6875rem;
+  }
+
+  .photo-overlay-top {
+    display: none;
+  }
+
+  /* Photo Lightbox Mobile */
+  .photo-modal-close-btn {
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .photo-modal-stage {
+    gap: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .photo-modal-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    background: rgba(14, 20, 19, 0.88);
+  }
+
+  .photo-modal-nav-prev {
+    left: 10px;
+  }
+
+  .photo-modal-nav-next {
+    right: 10px;
+  }
+
+  .photo-modal-content {
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 40px);
+    max-height: calc(100dvh - 40px);
+  }
+
+  .photo-modal-image {
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 50px);
+    max-height: calc(100dvh - 50px);
   }
 
   /* Before / After Mobile */
