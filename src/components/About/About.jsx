@@ -1,5 +1,6 @@
 import React from 'react';
 import about from '../../data/about';
+import { scrollToSection } from '../../utils/scroll';
 
 function About() {
   return (
@@ -93,91 +94,192 @@ function About() {
             </div>
           </div>
 
-          {/* Right Column: Personal Story & Creative Journey */}
+          {/* Right Column: Content & Editorial Flow */}
           <div className="about-content">
-            <div className="eyebrow">
-              <span className="badge-dot" aria-hidden="true"></span>
-              <span>{about.eyebrow}</span>
+            {/* 1 & 2. Heading Group: Eyebrow + Section Title */}
+            <div className="about-heading-group">
+              <div className="eyebrow about-eyebrow">
+                <span className="badge-dot" aria-hidden="true"></span>
+                <span>{about.eyebrow}</span>
+              </div>
+
+              <h2 className="about-title">
+                <span className="about-title-line">
+                  {about.titlePart1} <span className="text-accent">{about.titleAccent1 || 'VISUAL'}</span>
+                </span>
+                <span className="about-title-line text-accent">
+                  {about.titleAccent2 || 'STORYTELLER.'}
+                </span>
+              </h2>
             </div>
 
-            <h2 className="about-title">
-              {about.titlePart1} <span className="text-accent">{about.titleAccent}</span>
-            </h2>
-
+            {/* 3. Short Introduction Paragraph */}
             <p className="about-intro">
               {about.introduction}
             </p>
 
-            {/* Creative Journey Section */}
-            <div className="about-journey-section">
-              <div className="journey-header">
-                <span className="journey-label">{about.journeyHeading}</span>
-                <span className="journey-line" aria-hidden="true"></span>
-              </div>
+            {/* 4. Two CTA Buttons */}
+            <div className="about-actions">
+              <a
+                href="#photo-editing"
+                className="about-btn-primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection('#photo-editing');
+                }}
+              >
+                <svg className="about-btn-icon" viewBox="0 0 24 24" fill="currentColor" width="13" height="13" aria-hidden="true">
+                  <polygon points="6 4 20 12 6 20 6 4" />
+                </svg>
+                <span>View My Work</span>
+              </a>
 
-              <div className="journey-cards">
-                {about.journey.map((item) => (
-                  <div key={item.id} className="journey-card">
-                    <div className="journey-card-top">
-                      <span className="journey-number">{item.number}</span>
-                      <h3 className="journey-title">{item.title}</h3>
+              <a
+                href="#contact"
+                className="about-btn-secondary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection('#contact');
+                }}
+              >
+                <svg className="about-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="15" height="15" aria-hidden="true">
+                  <rect width="20" height="16" x="2" y="4" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+                <span>Hire Me</span>
+              </a>
+            </div>
+
+            {/* 5. Clean Three-Column Stats Row */}
+            <div className="about-stats-row" role="region" aria-label="Experience Statistics">
+              {about.stats.map((stat, idx) => (
+                <React.Fragment key={stat.id}>
+                  {idx > 0 && <div className="about-stat-divider" aria-hidden="true"></div>}
+                  <div className="about-stat-col">
+                    <span className="about-stat-value">{stat.value}</span>
+                    <span className="about-stat-label">{stat.label}</span>
+                  </div>
+                </React.Fragment>
+              ))}
+            </div>
+
+            {/* 6. Services Section: 3 equal rectangular cards */}
+            <div className="about-services-section">
+              <div className="about-services-header">
+                <span className="about-services-label">{about.servicesLabel || 'SERVICES'}</span>
+                <span className="about-services-line" aria-hidden="true"></span>
+              </div>
+              <div className="about-services-grid" role="list" aria-label="Creative Services">
+                {about.services.map((service) => (
+                  <div key={service.id} className="about-service-card" role="listitem">
+                    <div className="service-card-icon-wrap" aria-hidden="true">
+                      {service.icon === 'camera' && (
+                        <svg className="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                          <circle cx="12" cy="13" r="4" />
+                        </svg>
+                      )}
+                      {(service.icon === 'image' || service.icon === 'sparkle') && (
+                        <svg className="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                          <circle cx="9" cy="9" r="2" />
+                          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                        </svg>
+                      )}
+                      {service.icon === 'video' && (
+                        <svg className="service-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="m22 8-6 4 6 4V8Z" />
+                          <rect width="14" height="12" x="2" y="6" rx="2" ry="2" />
+                        </svg>
+                      )}
                     </div>
-                    <p className="journey-description">{item.description}</p>
+                    <span className="service-card-title">{service.title}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Supporting Discipline Badges */}
-            <div className="about-disciplines-row" aria-label="Core Creative Disciplines">
-              {about.disciplines.map((item) => (
-                <div key={item.label} className="discipline-badge">
-                  {item.icon === 'camera' && (
-                    <svg className="discipline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                      <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                  )}
-                  {item.icon === 'wand' && (
-                    <svg className="discipline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"></path>
-                    </svg>
-                  )}
-                  {item.icon === 'video' && (
-                    <svg className="discipline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                      <path d="m9 8 7 4-7 4V8z"></path>
-                    </svg>
-                  )}
-                  <span className="discipline-label">{item.label}</span>
-                </div>
-              ))}
+            {/* 7. Tools I Use Panel */}
+            <div className="about-tools-section">
+              <div className="about-tools-header">
+                <span className="about-tools-label">{about.toolsHeading}</span>
+                <span className="about-tools-line" aria-hidden="true"></span>
+              </div>
+              <div className="about-tools-panel" role="list" aria-label="Software Tools Used">
+                {about.tools.map((tool, idx) => (
+                  <React.Fragment key={tool.id}>
+                    {idx > 0 && <div className="about-tool-sep" aria-hidden="true"></div>}
+                    <div className="about-tool-item" role="listitem">
+                      <div className="about-tool-icon-wrap" aria-hidden="true">
+                        {tool.id === 'lightroom' && (
+                          <svg className="about-tool-svg" viewBox="0 0 28 28" fill="none">
+                            <rect width="28" height="28" rx="6" fill="#001D26" stroke="#00BFAF" strokeWidth="1.2" />
+                            <text x="14" y="19" fill="#00BFAF" fontSize="12" fontWeight="800" fontFamily="system-ui, sans-serif" textAnchor="middle">Lr</text>
+                          </svg>
+                        )}
+                        {tool.id === 'photoshop' && (
+                          <svg className="about-tool-svg" viewBox="0 0 28 28" fill="none">
+                            <rect width="28" height="28" rx="6" fill="#001E36" stroke="#31A8FF" strokeWidth="1.2" />
+                            <text x="14" y="19" fill="#31A8FF" fontSize="12" fontWeight="800" fontFamily="system-ui, sans-serif" textAnchor="middle">Ps</text>
+                          </svg>
+                        )}
+                        {tool.id === 'premiere' && (
+                          <svg className="about-tool-svg" viewBox="0 0 28 28" fill="none">
+                            <rect width="28" height="28" rx="6" fill="#1E002B" stroke="#EA77FF" strokeWidth="1.2" />
+                            <text x="14" y="19" fill="#EA77FF" fontSize="12" fontWeight="800" fontFamily="system-ui, sans-serif" textAnchor="middle">Pr</text>
+                          </svg>
+                        )}
+                        {tool.id === 'davinci' && (
+                          <svg className="about-tool-svg" viewBox="0 0 28 28" fill="none">
+                            <rect width="28" height="28" rx="6" fill="#14181B" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" />
+                            <circle cx="14" cy="9.5" r="2.8" fill="#E53935" />
+                            <circle cx="18.5" cy="17" r="2.8" fill="#1E88E5" />
+                            <circle cx="9.5" cy="17" r="2.8" fill="#FBC02D" />
+                            <circle cx="14" cy="14" r="1.6" fill="#FFFFFF" opacity="0.8" />
+                          </svg>
+                        )}
+                        {tool.id === 'capcut' && (
+                          <svg className="about-tool-svg" viewBox="0 0 28 28" fill="none">
+                            <rect width="28" height="28" rx="6" fill="#0E1214" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" />
+                            <path d="M7 9L14 13.5L21 9L21 12L14 16.5L7 12Z" fill="#FFFFFF" />
+                            <path d="M7 19L14 14.5L21 19L21 16L14 11.5L7 16Z" fill="#00BFAF" />
+                          </svg>
+                        )}
+                      </div>
+                      <span className="about-tool-text">{tool.name}</span>
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Horizontal Metadata Strip */}
-        <div className="about-meta-strip" aria-label="Artist Metadata">
-          <div className="meta-strip-item">
-            <span className="meta-strip-label">LOCATION</span>
-            <span className="meta-strip-value">{about.location}</span>
+        {/* 8. Compact Bottom Status Bar */}
+        <div className="about-status-bar" aria-label="Location, Focus, and Availability Information">
+          <div className="status-bar-group">
+            <svg className="status-bar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span className="status-bar-text">{about.metaBar.location}</span>
           </div>
 
-          <div className="meta-strip-divider" aria-hidden="true"></div>
+          <div className="status-bar-divider" aria-hidden="true"></div>
 
-          <div className="meta-strip-item">
-            <span className="meta-strip-label">FOCUS</span>
-            <span className="meta-strip-value">PHOTO + VIDEO</span>
+          <div className="status-bar-group">
+            <svg className="status-bar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+            <span className="status-bar-text">{about.metaBar.focus}</span>
           </div>
 
-          <div className="meta-strip-divider" aria-hidden="true"></div>
+          <div className="status-bar-divider" aria-hidden="true"></div>
 
-          <div className="meta-strip-item">
-            <span className="meta-strip-label">STATUS</span>
-            <span className="meta-strip-value status-active">
-              <span className="status-live-dot" aria-hidden="true"></span>
-              {about.availability}
-            </span>
+          <div className="status-bar-group">
+            <span className="status-dot-indicator" aria-hidden="true"></span>
+            <span className="status-bar-text">{about.metaBar.status}</span>
           </div>
         </div>
       </div>
@@ -186,4 +288,3 @@ function About() {
 }
 
 export default About;
-
