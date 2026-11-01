@@ -23,7 +23,7 @@ const about = {
     {
       id: "turnaround",
       value: "Fast",
-      label: "Turnaround Time"
+      label: "Quick Turnaround"
     }
   ],
 

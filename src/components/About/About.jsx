@@ -153,13 +153,11 @@ function About() {
             {/* 5. Clean Three-Column Stats Row */}
             <div className="about-stats-row" role="region" aria-label="Experience Statistics">
               {about.stats.map((stat, idx) => (
-                <React.Fragment key={stat.id}>
+                <div key={stat.id} className="about-stat-col">
                   {idx > 0 && <div className="about-stat-divider" aria-hidden="true"></div>}
-                  <div className="about-stat-col">
-                    <span className="about-stat-value">{stat.value}</span>
-                    <span className="about-stat-label">{stat.label}</span>
-                  </div>
-                </React.Fragment>
+                  <span className="about-stat-value">{stat.value}</span>
+                  <span className="about-stat-label">{stat.label}</span>
+                </div>
               ))}
             </div>
 

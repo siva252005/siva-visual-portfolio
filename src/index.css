@@ -3327,8 +3327,8 @@ video {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 555px;
-  max-height: 560px;
+  height: 540px;
+  max-height: 545px;
   box-sizing: border-box;
 }
 
@@ -3395,13 +3395,13 @@ video {
   text-decoration: none;
   border: 1px solid #00BFAF;
   box-shadow: 0 4px 16px rgba(0, 191, 175, 0.25);
-  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: background-color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
 }
 
 .about-btn-primary:hover {
   background-color: #00D6C4;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 22px rgba(0, 191, 175, 0.42);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 191, 175, 0.45);
 }
 
 .about-btn-secondary {
@@ -3419,13 +3419,14 @@ video {
   border-radius: 8px;
   text-decoration: none;
   border: 1px solid rgba(0, 191, 175, 0.65);
-  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+  transition: border-color 250ms ease, background-color 250ms ease, transform 250ms ease, box-shadow 250ms ease;
 }
 
 .about-btn-secondary:hover {
   border-color: #00BFAF;
-  background-color: rgba(0, 191, 175, 0.1);
-  transform: translateY(-2px);
+  background-color: rgba(0, 191, 175, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0, 191, 175, 0.28);
 }
 
 .about-btn-icon {
@@ -3437,18 +3438,21 @@ video {
   color: #00BFAF;
 }
 
-/* 5. Balanced Three-Column Stats Row */
+/* 5. Balanced Three-Column Stats Row (Aligned with Services Cards) */
 .about-stats-row {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
   align-items: center;
   margin-top: 0;
   margin-bottom: 0;
   padding: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .about-stat-col {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -3470,18 +3474,20 @@ video {
 }
 
 .about-stat-divider {
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 1px;
   height: 40px;
-  background-color: rgba(0, 191, 175, 0.22);
-  margin: 0 20px;
-  flex-shrink: 0;
+  background-color: rgba(0, 191, 175, 0.45);
 }
 
-/* 6. Services Section: 3 equal rectangular cards */
+/* 6. Services Section: 3 compact equal rectangular cards (aligned with stats) */
 .about-services-section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin-top: 0;
   margin-bottom: 0;
   width: 100%;
@@ -3510,7 +3516,7 @@ video {
 .about-services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 14px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -3519,42 +3525,44 @@ video {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  height: 48px;
-  padding: 0 12px;
+  gap: 8px;
+  height: 38px;
+  padding: 0 10px;
   background-color: var(--bg-card);
-  border: 1px solid rgba(0, 191, 175, 0.35);
+  border: 1px solid rgba(0, 191, 175, 0.28);
   border-radius: 8px;
   box-sizing: border-box;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+  cursor: default;
+  transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease, background-color 250ms ease;
 }
 
 .about-service-card:hover {
+  transform: translateY(-3px);
   border-color: rgba(0, 191, 175, 0.75);
   background-color: rgba(17, 24, 23, 0.95);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 191, 175, 0.25);
 }
 
 .service-card-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   color: #00BFAF;
   flex-shrink: 0;
 }
 
 .service-card-icon {
-  width: 19px;
-  height: 19px;
+  width: 16px;
+  height: 16px;
   color: #00BFAF;
   display: block;
 }
 
 .service-card-title {
   color: #FFFFFF;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   white-space: nowrap;
@@ -3564,7 +3572,7 @@ video {
 .about-tools-section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin-top: 0;
   margin-bottom: 0;
   width: 100%;
@@ -3597,19 +3605,29 @@ video {
   background-color: var(--bg-card);
   border: 1px solid rgba(0, 191, 175, 0.3);
   border-radius: 8px;
-  padding: 8px 16px;
-  min-height: 46px;
+  padding: 6px 14px;
+  min-height: 44px;
   box-sizing: border-box;
   width: 100%;
 }
 
 .about-tool-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  flex: 1;
-  justify-content: center;
-  padding: 2px 4px;
+  flex: 0 0 auto;
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: default;
+  transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease, background-color 250ms ease;
+}
+
+.about-tool-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 191, 175, 0.45);
+  background-color: rgba(0, 191, 175, 0.08);
+  box-shadow: 0 3px 12px rgba(0, 191, 175, 0.22);
 }
 
 .about-tool-icon-wrap {
@@ -3637,17 +3655,18 @@ video {
 
 .about-tool-sep {
   width: 1px;
-  height: 20px;
+  height: 18px;
   background-color: rgba(0, 191, 175, 0.22);
   flex-shrink: 0;
 }
 
-/* 8. Compact Bottom Status Bar (24px below main grid) */
+/* 8. Compact Bottom Status Bar (Tidied & Centered) */
 .about-status-bar {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr;
+  display: flex;
   align-items: center;
-  padding: 12px 28px;
+  justify-content: center;
+  gap: clamp(18px, 3.5vw, 36px);
+  padding: 11px 28px;
   background-color: rgba(17, 24, 23, 0.85);
   border: 1px solid rgba(0, 191, 175, 0.3);
   border-radius: 10px;
@@ -3657,11 +3676,11 @@ video {
 }
 
 .status-bar-group {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  width: 100%;
+  gap: 9px;
+  white-space: nowrap;
 }
 
 .status-bar-icon {
@@ -3683,9 +3702,9 @@ video {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #00BFAF;
-  box-shadow: 0 0 10px #00BFAF;
-  animation: aboutStatusPulse 2s infinite ease-in-out;
+  background-color: #10B981;
+  box-shadow: 0 0 6px rgba(0, 191, 175, 0.65), 0 0 12px rgba(0, 191, 175, 0.28);
+  animation: aboutStatusPulse 2.5s infinite ease-in-out;
   flex-shrink: 0;
 }
 
@@ -3693,17 +3712,19 @@ video {
   0%, 100% {
     opacity: 1;
     transform: scale(1);
+    box-shadow: 0 0 6px rgba(0, 191, 175, 0.65), 0 0 12px rgba(0, 191, 175, 0.28);
   }
   50% {
-    opacity: 0.45;
-    transform: scale(0.85);
+    opacity: 0.72;
+    transform: scale(0.92);
+    box-shadow: 0 0 3px rgba(0, 191, 175, 0.4), 0 0 6px rgba(0, 191, 175, 0.15);
   }
 }
 
 .status-bar-divider {
   width: 1px;
-  height: 20px;
-  background-color: rgba(0, 191, 175, 0.25);
+  height: 18px;
+  background-color: rgba(0, 191, 175, 0.3);
   flex-shrink: 0;
 }
 
@@ -5386,26 +5407,37 @@ video {
     font-size: clamp(2rem, 3vw, 2.5rem);
   }
 
+  .about-stats-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
   .about-stat-value {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
   }
 
   .about-stat-divider {
-    margin: 0 12px;
+    left: -5px;
+    height: 36px;
   }
 
   .about-services-grid {
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
 
   .about-service-card {
-    height: 48px;
+    height: 38px;
     padding: 0 8px;
-    gap: 8px;
+    gap: 7px;
   }
 
   .service-card-title {
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
+  }
+
+  .about-tools-panel {
+    padding: 6px 10px;
   }
 
   .about-tool-item {
@@ -5418,7 +5450,7 @@ video {
   }
 
   .about-status-bar {
-    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 16px;
     padding: 10px 18px;
     border-radius: 10px;
   }
@@ -5891,10 +5923,14 @@ video {
 
   .about-stats-row {
     display: grid;
-    grid-template-columns: 1fr auto 1fr auto 1fr;
+    grid-template-columns: repeat(3, 1fr);
     align-items: center;
-    gap: 4px;
-    margin-bottom: 20px;
+    gap: 6px;
+    margin-bottom: 0;
+  }
+
+  .about-stat-col {
+    position: relative;
   }
 
   .about-stat-value {
@@ -5907,35 +5943,42 @@ video {
   }
 
   .about-stat-divider {
-    margin: 0 6px;
-    height: 36px;
+    position: absolute;
+    left: -3px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 32px;
+    background-color: rgba(0, 191, 175, 0.45);
   }
 
   .about-services-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .about-service-card {
-    height: 48px;
-    padding: 0 16px;
+    height: 38px;
+    padding: 0 12px;
     justify-content: center;
   }
 
   .service-card-title {
-    font-size: 1rem;
+    font-size: 0.9375rem;
   }
 
   .about-tools-panel {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px 10px;
-    padding: 14px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 10px 12px;
   }
 
   .about-tool-item {
-    justify-content: flex-start;
-    padding: 2px 0;
+    justify-content: center;
+    padding: 4px 6px;
   }
 
   .about-tool-sep {
@@ -5943,8 +5986,9 @@ video {
   }
 
   .about-status-bar {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     border-radius: 10px;
     gap: 12px;
     padding: 14px 18px;
@@ -5955,7 +5999,7 @@ video {
   }
 
   .status-bar-group {
-    justify-content: flex-start;
+    justify-content: center;
     width: 100%;
   }
 
