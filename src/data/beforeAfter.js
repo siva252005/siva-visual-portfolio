@@ -1,5 +1,5 @@
 // Before / After Comparison Projects Data
-// Real portfolio asset paths and project metadata
+// Real portfolio asset paths and optimized responsive WebP variants
 
 export const beforeAfterProjects = [
   {
@@ -11,8 +11,11 @@ export const beforeAfterProjects = [
     description: "Balancing exposure, refining natural skin tones and sculpting ambient depth for a clean, professional finish.",
     before: "/assets/images/before-after/WhatsApp Image 2026-10-08 at 11.35.55.jpeg",
     after: "/assets/images/before-after/WhatsApp Image 2026-10-08 at 11.35.56.jpeg",
-    beforeWebp: "/assets/images/before-after/01-portrait-before.webp",
-    afterWebp: "/assets/images/before-after/01-portrait-after.webp",
+    beforeWebp: "/assets/images/before-after/01-portrait-before-440w.webp",
+    afterWebp: "/assets/images/before-after/01-portrait-after-440w.webp",
+    beforeSrcSet: "/assets/images/before-after/01-portrait-before-280w.webp 280w, /assets/images/before-after/01-portrait-before-440w.webp 440w, /assets/images/before-after/01-portrait-before-800w.webp 800w",
+    afterSrcSet: "/assets/images/before-after/01-portrait-after-280w.webp 280w, /assets/images/before-after/01-portrait-after-440w.webp 440w, /assets/images/before-after/01-portrait-after-800w.webp 800w",
+    sizes: "(max-width: 480px) 280px, (max-width: 768px) 360px, 440px",
     width: 854,
     height: 1280,
     aspectRatio: "854 / 1280",
@@ -26,8 +29,11 @@ export const beforeAfterProjects = [
     description: "Transforming flat RAW sensor exposure into dramatic, high-atmosphere landscape tones with rich foliage depth.",
     before: "/assets/images/before-after/file_00000000799482119301ce2f9b094cd6.jpg",
     after: "/assets/images/before-after/20260803_044414 (1).jpg",
-    beforeWebp: "/assets/images/before-after/02-landscape-before.webp",
-    afterWebp: "/assets/images/before-after/02-landscape-after.webp",
+    beforeWebp: "/assets/images/before-after/02-landscape-before-440w.webp",
+    afterWebp: "/assets/images/before-after/02-landscape-after-440w.webp",
+    beforeSrcSet: "/assets/images/before-after/02-landscape-before-280w.webp 280w, /assets/images/before-after/02-landscape-before-440w.webp 440w, /assets/images/before-after/02-landscape-before-800w.webp 800w",
+    afterSrcSet: "/assets/images/before-after/02-landscape-after-280w.webp 280w, /assets/images/before-after/02-landscape-after-440w.webp 440w, /assets/images/before-after/02-landscape-after-800w.webp 800w",
+    sizes: "(max-width: 480px) 280px, (max-width: 768px) 360px, 440px",
     width: 913,
     height: 1723,
     aspectRatio: "913 / 1723",
@@ -41,8 +47,11 @@ export const beforeAfterProjects = [
     description: "Refining natural skin tones while balancing deep shadow contrast, highlight roll-off, and cinematic atmospheric warmth.",
     before: "/assets/images/before-after/WhatsApp Image 2026-10-08 at 11.37.477.jpeg",
     after: "/assets/images/before-after/WhatsApp Image 2026-10-08 at 11.37.47.jpeg",
-    beforeWebp: "/assets/images/before-after/03-portrait-grade-before.webp",
-    afterWebp: "/assets/images/before-after/03-portrait-grade-after.webp",
+    beforeWebp: "/assets/images/before-after/03-portrait-grade-before-440w.webp",
+    afterWebp: "/assets/images/before-after/03-portrait-grade-after-440w.webp",
+    beforeSrcSet: "/assets/images/before-after/03-portrait-grade-before-280w.webp 280w, /assets/images/before-after/03-portrait-grade-before-440w.webp 440w, /assets/images/before-after/03-portrait-grade-before-800w.webp 800w",
+    afterSrcSet: "/assets/images/before-after/03-portrait-grade-after-280w.webp 280w, /assets/images/before-after/03-portrait-grade-after-440w.webp 440w, /assets/images/before-after/03-portrait-grade-after-800w.webp 800w",
+    sizes: "(max-width: 480px) 280px, (max-width: 768px) 360px, 440px",
     width: 854,
     height: 1280,
     aspectRatio: "854 / 1280",

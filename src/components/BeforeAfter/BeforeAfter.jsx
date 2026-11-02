@@ -10,7 +10,13 @@ function BeforeAfter() {
   const isDraggingRef = useRef(false);
   const sliderPosRef = useRef(40);
 
+  // Cache loaded project IDs to eliminate flickering and avoid redundant spinners
+  const [loadedProjectIds, setLoadedProjectIds] = useState(() => new Set());
+  const loadedProjectsRef = useRef(new Set());
+  const loadedLayersRef = useRef({}); // { [id]: { before: bool, after: bool } }
+
   const currentProject = beforeAfterProjects[currentIndex] || beforeAfterProjects[0];
+  const isCurrentReady = loadedProjectIds.has(currentProject.id);
 
   // Helper to apply position directly to DOM for zero React re-renders during dragging
   const applyPosition = useCallback((percentage) => {
@@ -22,20 +28,72 @@ function BeforeAfter() {
     }
   }, []);
 
-  // Prefetch inactive transformations on button hover/focus
-  const prefetchProject = useCallback((project) => {
-    if (!project) return;
-    const targetAfter = project.afterWebp || project.after;
-    const targetBefore = project.beforeWebp || project.before;
-    if (targetAfter) {
-      const imgA = new Image();
-      imgA.src = targetAfter;
+  // Mark layer as loaded and update ready state when both layers are ready
+  const handleLayerLoaded = useCallback((layer, projId) => {
+    if (!loadedLayersRef.current[projId]) {
+      loadedLayersRef.current[projId] = { before: false, after: false };
     }
-    if (targetBefore) {
-      const imgB = new Image();
-      imgB.src = targetBefore;
+    loadedLayersRef.current[projId][layer] = true;
+    if (loadedLayersRef.current[projId].before && loadedLayersRef.current[projId].after) {
+      if (!loadedProjectsRef.current.has(projId)) {
+        loadedProjectsRef.current.add(projId);
+        setLoadedProjectIds(new Set(loadedProjectsRef.current));
+      }
     }
   }, []);
+
+  // Prefetch inactive transformations on button hover/focus with responsive srcset
+  const prefetchProject = useCallback((project) => {
+    if (!project || loadedProjectsRef.current.has(project.id)) return;
+    const targetAfter = project.afterWebp || project.after;
+    const targetBefore = project.beforeWebp || project.before;
+
+    let loadedCount = 0;
+    const checkBoth = () => {
+      loadedCount++;
+      if (loadedCount >= 2) {
+        loadedProjectsRef.current.add(project.id);
+        setLoadedProjectIds(new Set(loadedProjectsRef.current));
+      }
+    };
+
+    if (targetAfter) {
+      const imgA = new Image();
+      if (project.afterSrcSet) {
+        imgA.srcset = project.afterSrcSet;
+        imgA.sizes = project.sizes || '(max-width: 480px) 280px, (max-width: 768px) 360px, 440px';
+      }
+      imgA.src = targetAfter;
+      if (imgA.complete) {
+        checkBoth();
+      } else {
+        imgA.onload = checkBoth;
+        imgA.onerror = checkBoth;
+      }
+    }
+
+    if (targetBefore) {
+      const imgB = new Image();
+      if (project.beforeSrcSet) {
+        imgB.srcset = project.beforeSrcSet;
+        imgB.sizes = project.sizes || '(max-width: 480px) 280px, (max-width: 768px) 360px, 440px';
+      }
+      imgB.src = targetBefore;
+      if (imgB.complete) {
+        checkBoth();
+      } else {
+        imgB.onload = checkBoth;
+        imgB.onerror = checkBoth;
+      }
+    }
+  }, []);
+
+  // Preload initial active project on mount
+  useEffect(() => {
+    if (beforeAfterProjects[0]) {
+      prefetchProject(beforeAfterProjects[0]);
+    }
+  }, [prefetchProject]);
 
   // Cleanup any pending animation frame on unmount
   useEffect(() => {
@@ -119,6 +177,10 @@ function BeforeAfter() {
     setCurrentIndex(idx);
     applyPosition(40);
     setSliderPosition(40);
+    // Eagerly prefetch the selected project if not already loaded
+    if (beforeAfterProjects[idx]) {
+      prefetchProject(beforeAfterProjects[idx]);
+    }
   };
 
   return (
@@ -194,23 +256,44 @@ function BeforeAfter() {
               aria-valuemax={100}
               aria-valuetext={`${Math.round(sliderPosition)}% reveal`}
             >
+              {/* Progressive Loading Skeleton */}
+              {!isCurrentReady && (
+                <div className="comparison-skeleton" aria-hidden="true">
+                  <div className="comparison-skeleton-shimmer"></div>
+                  <div className="comparison-skeleton-badge">
+                    <span className="skeleton-spinner"></span>
+                    <span>Loading transformation...</span>
+                  </div>
+                </div>
+              )}
+
               {/* Layer 1: AFTER (Base Underneath Layer) */}
-              <div className="comparison-layer comparison-layer-after">
+              <div className={`comparison-layer comparison-layer-after ${isCurrentReady ? 'is-ready' : 'is-loading'}`}>
                 {currentProject.after ? (
                   <picture>
-                    {currentProject.afterWebp && (
-                      <source srcSet={currentProject.afterWebp} type="image/webp" />
-                    )}
+                    {currentProject.afterSrcSet ? (
+                      <source
+                        type="image/webp"
+                        srcSet={currentProject.afterSrcSet}
+                        sizes={currentProject.sizes || '(max-width: 480px) 280px, (max-width: 768px) 360px, 440px'}
+                      />
+                    ) : currentProject.afterWebp ? (
+                      <source type="image/webp" srcSet={currentProject.afterWebp} />
+                    ) : null}
                     <img
-                      src={currentProject.after}
+                      src={currentProject.afterWebp || currentProject.after}
                       alt={`${currentProject.title} Refined`}
                       className="comparison-img comparison-img-base"
-                      loading="lazy"
+                      loading="eager"
+                      fetchPriority="high"
                       decoding="async"
                       width={currentProject.width || 854}
                       height={currentProject.height || 1280}
+                      onLoad={() => handleLayerLoaded('after', currentProject.id)}
                       onError={(e) => {
-                        e.target.style.display = 'none';
+                        if (e.target.src !== currentProject.after) {
+                          e.target.src = currentProject.after;
+                        }
                       }}
                     />
                   </picture>
@@ -226,26 +309,36 @@ function BeforeAfter() {
 
               {/* Layer 2: BEFORE (Clipped Top Layer) */}
               <div
-                className="comparison-layer comparison-layer-before"
+                className={`comparison-layer comparison-layer-before ${isCurrentReady ? 'is-ready' : 'is-loading'}`}
                 style={{
                   clipPath: `polygon(0 0, var(--slider-pos, ${sliderPosition}%) 0, var(--slider-pos, ${sliderPosition}%) 100%, 0 100%)`,
                 }}
               >
                 {currentProject.before ? (
                   <picture>
-                    {currentProject.beforeWebp && (
-                      <source srcSet={currentProject.beforeWebp} type="image/webp" />
-                    )}
+                    {currentProject.beforeSrcSet ? (
+                      <source
+                        type="image/webp"
+                        srcSet={currentProject.beforeSrcSet}
+                        sizes={currentProject.sizes || '(max-width: 480px) 280px, (max-width: 768px) 360px, 440px'}
+                      />
+                    ) : currentProject.beforeWebp ? (
+                      <source type="image/webp" srcSet={currentProject.beforeWebp} />
+                    ) : null}
                     <img
-                      src={currentProject.before}
+                      src={currentProject.beforeWebp || currentProject.before}
                       alt={`${currentProject.title} Raw`}
                       className="comparison-img comparison-img-clipped"
-                      loading="lazy"
+                      loading="eager"
+                      fetchPriority="high"
                       decoding="async"
                       width={currentProject.width || 854}
                       height={currentProject.height || 1280}
+                      onLoad={() => handleLayerLoaded('before', currentProject.id)}
                       onError={(e) => {
-                        e.target.style.display = 'none';
+                        if (e.target.src !== currentProject.before) {
+                          e.target.src = currentProject.before;
+                        }
                       }}
                     />
                   </picture>
