@@ -3,12 +3,12 @@ import { beforeAfterProjects } from '../../data/beforeAfter';
 
 function BeforeAfter() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [sliderPosition, setSliderPosition] = useState(50);
+  const [sliderPosition, setSliderPosition] = useState(40);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
   const rafIdRef = useRef(null);
   const isDraggingRef = useRef(false);
-  const sliderPosRef = useRef(50);
+  const sliderPosRef = useRef(40);
 
   const currentProject = beforeAfterProjects[currentIndex] || beforeAfterProjects[0];
 
@@ -117,8 +117,8 @@ function BeforeAfter() {
 
   const handleSelectProject = (idx) => {
     setCurrentIndex(idx);
-    applyPosition(50);
-    setSliderPosition(50);
+    applyPosition(40);
+    setSliderPosition(40);
   };
 
   return (
@@ -148,7 +148,6 @@ function BeforeAfter() {
                 <span className="before-after-dot">·</span>
                 <span className="before-after-tag">{currentProject.tag}</span>
               </div>
-              <h3 className="before-after-title">{currentProject.title}</h3>
               <p className="before-after-desc">{currentProject.description}</p>
             </div>
 
@@ -283,6 +282,11 @@ function BeforeAfter() {
               <span className="comparison-corner comparison-corner-tr" aria-hidden="true"></span>
               <span className="comparison-corner comparison-corner-bl" aria-hidden="true"></span>
               <span className="comparison-corner comparison-corner-br" aria-hidden="true"></span>
+            </div>
+            {/* Drag Hint */}
+            <div className="comparison-hint" aria-hidden="true">
+              <span className="comparison-hint-icon">↔</span>
+              <span>Drag to compare</span>
             </div>
           </div>
         </div>
