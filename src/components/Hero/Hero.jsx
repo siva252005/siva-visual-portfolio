@@ -1,13 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import heroData from '../../data/hero';
+import videos from '../../data/videos';
 import { scrollToSection } from '../../utils/scroll';
 
 function Hero() {
+  const [isShowreelOpen, setIsShowreelOpen] = useState(false);
+
+  // Check if a working showreel video is available
+  const showreelVideo = Array.isArray(videos) && videos.length > 0 ? videos[0] : null;
+  const hasShowreel = Boolean(showreelVideo && showreelVideo.video);
+
+  const handleOpenShowreel = (e) => {
+    e.preventDefault();
+    if (hasShowreel) {
+      setIsShowreelOpen(true);
+    } else {
+      scrollToSection('#video');
+    }
+  };
+
+  const handleCloseShowreel = () => {
+    setIsShowreelOpen(false);
+  };
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        handleCloseShowreel();
+      }
+    };
+
+    if (isShowreelOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [isShowreelOpen]);
+
   return (
     <section id="home" className="hero-section">
       <div className="hero-glow-bg" aria-hidden="true"></div>
-      
-      <div className="container">
+
+      <div className="container hero-container">
         <div className="hero-grid">
           {/* Editorial Text Content */}
           <div className="hero-content">
@@ -26,33 +65,58 @@ function Hero() {
               {heroData.description}
             </p>
 
+            {/* Consistent 3-Tier Action Buttons */}
             <div className="hero-actions">
               <a
                 href="#photo-editing"
-                className="btn btn-primary btn-lg"
+                className="hero-btn hero-btn-primary"
                 onClick={(e) => {
                   e.preventDefault();
-                  scrollToSection('#photo-editing');
+                  window.history.pushState({}, '', '#photo-editing');
+                  scrollToSection('#photo-editing', true);
                 }}
               >
-                VIEW MY WORK
+                View My Work
               </a>
+
               <a
-                href="#video"
-                className="btn btn-secondary btn-lg"
+                href="#contact"
+                className="hero-btn hero-btn-secondary"
                 onClick={(e) => {
                   e.preventDefault();
-                  scrollToSection('#video');
+                  window.history.pushState({}, '', '#contact');
+                  scrollToSection('#contact', true);
                 }}
               >
-                WATCH SHOWREEL
+                Hire Me
               </a>
+
+              {hasShowreel && (
+                <button
+                  type="button"
+                  className="hero-btn hero-btn-tertiary"
+                  onClick={handleOpenShowreel}
+                  aria-label={`Watch showreel video: ${showreelVideo.title}`}
+                >
+                  <span className="hero-btn-play-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor">
+                      <polygon points="7,4 20,12 7,20" />
+                    </svg>
+                  </span>
+                  <span>Watch Showreel</span>
+                </button>
+              )}
             </div>
 
-            <div className="hero-meta">
-              <span className="hero-meta-item">{heroData.metaItem1}</span>
-              <span className="hero-meta-divider">/</span>
-              <span className="hero-meta-item">{heroData.metaItem2}</span>
+            {/* Minimal Information Strip with Subtle Teal Slash Dividers */}
+            <div className="hero-meta" role="region" aria-label="Key Highlights">
+              <div className="hero-meta-strip">
+                <span className="hero-meta-item">4+ YEARS</span>
+                <span className="hero-meta-divider" aria-hidden="true">/</span>
+                <span className="hero-meta-item">200+ VIDEOS</span>
+                <span className="hero-meta-divider" aria-hidden="true">/</span>
+                <span className="hero-meta-item">ALL TAMIL NADU</span>
+              </div>
             </div>
           </div>
 
@@ -89,49 +153,79 @@ function Hero() {
                     />
                   </picture>
                 ) : null}
-                
+
                 {/* Cinematic ambient framing overlay */}
                 <div className="hero-visual-overlay"></div>
-                
-                {/* Editorial Canvas Placeholder Elements (visible until image loaded) */}
+
+                {/* Available for Projects Badge */}
+                <div className="hero-visual-badge">
+                  <span className="hero-visual-badge-dot" aria-hidden="true"></span>
+                  <span>{heroData.badgeText || "Available for Projects"}</span>
+                </div>
+
+                {/* Editorial Canvas Elements */}
                 <div className="hero-visual-placeholder">
-                  <div className="hero-visual-badge">
-                    <span className="hero-visual-badge-dot"></span>
-                    <span>{heroData.archiveBadge}</span>
-                  </div>
-                  <div className="hero-visual-center-text">
-                    <span className="hero-visual-tag">{heroData.canvasTag}</span>
-                    <span className="hero-visual-subtag">{heroData.canvasSubtag}</span>
+                  <div className="hero-visual-caption-box">
+                    <span className="hero-visual-tag">{heroData.captionTag || "Cinematic Grading & Editing"}</span>
+                    <span className="hero-visual-subtag">{heroData.captionSubtag || "Color · Frame · Rhythm"}</span>
                   </div>
                 </div>
 
-                {/* Editorial Corner Crosshairs */}
-                <span className="hero-corner hero-corner-tl" aria-hidden="true"></span>
-                <span className="hero-corner hero-corner-tr" aria-hidden="true"></span>
-                <span className="hero-corner hero-corner-bl" aria-hidden="true"></span>
-                <span className="hero-corner hero-corner-br" aria-hidden="true"></span>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Centered Bottom Scroll Indicator positioned safely below content */}
+        <div className="hero-scroll-container">
+          <a
+            href="#photo-editing"
+            className="hero-scroll"
+            aria-label="Scroll down to photo editing"
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState({}, '', '#photo-editing');
+              scrollToSection('#photo-editing', true);
+            }}
+          >
+            <span className="hero-scroll-text">SCROLL</span>
+            <span className="hero-scroll-icon" aria-hidden="true">↓</span>
+          </a>
+        </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <a
-        href="#photo-editing"
-        className="hero-scroll"
-        aria-label="Scroll to photo editing"
-        onClick={(e) => {
-          e.preventDefault();
-          scrollToSection('#photo-editing');
-        }}
-      >
-        <span className="hero-scroll-text">SCROLL</span>
-        <span className="hero-scroll-icon" aria-hidden="true">↓</span>
-      </a>
+      {/* Video Modal for Showreel */}
+      {isShowreelOpen && showreelVideo && (
+        <div
+          className="video-modal-backdrop"
+          onClick={handleCloseShowreel}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Showreel Video Player"
+        >
+          <button
+            type="button"
+            className="video-modal-close-btn"
+            onClick={handleCloseShowreel}
+            aria-label="Close showreel video"
+          >
+            ✕
+          </button>
+          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="video-modal-player-wrapper">
+              <video
+                src={showreelVideo.video}
+                className="video-modal-player"
+                controls
+                autoPlay
+                playsInline
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
 
 export default Hero;
-

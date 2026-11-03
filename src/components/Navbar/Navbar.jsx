@@ -4,13 +4,53 @@ import { scrollToSection } from '../../utils/scroll';
 function Navbar({ onNavigate }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('#home');
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      // Don't track homepage scroll when on a project page
+      if (window.location.pathname.startsWith('/project/')) return;
+
+      // When near top of page, always mark #home active
+      if (window.scrollY < 180) {
+        setActiveSection('#home');
+        return;
+      }
+
+      // When near bottom of page, mark #contact active
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
+        setActiveSection('#contact');
+        return;
+      }
+
+      const sectionIds = [
+        'home',
+        'photo-editing',
+        'before-after',
+        'video',
+        'process',
+        'about',
+        'contact'
+      ];
+
+      const scrollPos = window.scrollY + 160;
+
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPos >= top) {
+            setActiveSection(`#${sectionIds[i]}`);
+            break;
+          }
+        }
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -21,6 +61,28 @@ function Navbar({ onNavigate }) {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
+
+  // Close mobile drawer on Escape key or viewport resize beyond mobile/tablet
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    const handleResize = () => {
+      if (window.innerWidth > 768 && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobileMenuOpen]);
 
   const handleLinkClick = (e, href) => {
     closeMobileMenu();
@@ -39,6 +101,7 @@ function Navbar({ onNavigate }) {
 
     if (href.startsWith('#')) {
       e.preventDefault();
+      setActiveSection(href);
       window.history.pushState({}, '', href);
       scrollToSection(href, true);
     }
@@ -71,26 +134,37 @@ function Navbar({ onNavigate }) {
             <a
               key={link.label}
               href={link.href}
-              className="nav-link"
+              className={`nav-link ${activeSection === link.href ? 'active' : ''}`}
               onClick={(e) => handleLinkClick(e, link.href)}
+              aria-current={activeSection === link.href ? 'page' : undefined}
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        {/* Mobile Hamburger Toggle Button */}
-        <button
-          type="button"
-          className={`navbar-toggle ${isMobileMenuOpen ? 'active' : ''}`}
-          onClick={toggleMobileMenu}
-          aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={isMobileMenuOpen}
-        >
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-        </button>
+        {/* Right CTA Button & Mobile Hamburger Toggle Button */}
+        <div className="navbar-right">
+          <a
+            href="#contact"
+            className="navbar-hire-btn"
+            onClick={(e) => handleLinkClick(e, '#contact')}
+          >
+            Hire Me
+          </a>
+
+          <button
+            type="button"
+            className={`navbar-toggle ${isMobileMenuOpen ? 'active' : ''}`}
+            onClick={toggleMobileMenu}
+            aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isMobileMenuOpen}
+          >
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+          </button>
+        </div>
       </div>
 
       {/* Mobile Navigation Drawer */}
@@ -103,12 +177,20 @@ function Navbar({ onNavigate }) {
             <a
               key={link.label}
               href={link.href}
-              className="mobile-nav-link"
+              className={`mobile-nav-link ${activeSection === link.href ? 'active' : ''}`}
               onClick={(e) => handleLinkClick(e, link.href)}
+              aria-current={activeSection === link.href ? 'page' : undefined}
             >
               {link.label}
             </a>
           ))}
+          <a
+            href="#contact"
+            className="mobile-nav-hire-btn"
+            onClick={(e) => handleLinkClick(e, '#contact')}
+          >
+            Hire Me
+          </a>
         </nav>
       </div>
     </header>
