@@ -160,7 +160,7 @@ function Hero() {
                 {/* Available for Projects Badge */}
                 <div className="hero-visual-badge">
                   <span className="hero-visual-badge-dot" aria-hidden="true"></span>
-                  <span>{heroData.badgeText || "Available for Projects"}</span>
+                  <span>{heroData.badgeText || "Available for Freelance Projects"}</span>
                 </div>
 
                 {/* Editorial Canvas Elements */}

@@ -59,13 +59,13 @@ const about = {
 
   // Compact bottom status bar
   metaBar: {
-    location: "Coimbatore, Tamil Nadu",
+    location: "Coimbatore, Tamil Nadu, India",
     focus: "Photo + Video",
     status: "Available for Freelance Projects"
   },
 
   // Retain legacy fields for backward compatibility
-  location: "Coimbatore, Tamil Nadu",
+  location: "Coimbatore, Tamil Nadu, India",
   availability: "Available for Freelance Projects",
 
   // Image assets

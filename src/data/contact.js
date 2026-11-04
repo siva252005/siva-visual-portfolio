@@ -5,15 +5,53 @@ const contact = {
   description:
     "Have a photo, video or visual story that needs the right treatment? Tell me what you're working on and what you want the final result to feel like.",
 
-  availability: "AVAILABLE FOR SELECT PROJECTS",
+  availability: "Available for Freelance Projects",
   responseTime: "RESPONSE WITHIN 24–48 HOURS",
 
-  services: [
-    "PHOTO EDITING",
-    "VIDEO EDITING",
-    "COLOR GRADING",
-    "RETOUCHING",
-    "SHORT-FORM CONTENT"
+  // Supporting specialization line
+  servicesSummary: "Reels · Wedding Films · Brand Promos",
+
+  // Direct contact channels (WhatsApp, Instagram, Email)
+  directChannels: [
+    {
+      id: "whatsapp",
+      label: "WhatsApp",
+      sublabel: "Quick Chat",
+      url: import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/",
+      icon: "whatsapp"
+    },
+    {
+      id: "instagram",
+      label: "Instagram",
+      sublabel: "DM & Follow",
+      url: import.meta.env.VITE_INSTAGRAM_URL || "https://www.instagram.com/",
+      icon: "instagram"
+    },
+    {
+      id: "email",
+      label: "Email",
+      sublabel: "msdsiva762@gmail.com",
+      url: "mailto:msdsiva762@gmail.com",
+      icon: "email"
+    }
+  ],
+
+  // Project Type Dropdown Options (default is placeholder "Select Project Type")
+  projectTypes: [
+    "Instagram Reel",
+    "Wedding Film",
+    "Brand Promo",
+    "Photo Editing",
+    "Event Highlights",
+    "Other"
+  ],
+
+  // Optional selectable budget ranges in INR
+  budgetRanges: [
+    "Under ₹10,000",
+    "₹10,000 – ₹25,000",
+    "₹25,000 – ₹50,000",
+    "₹50,000+"
   ]
 };
 

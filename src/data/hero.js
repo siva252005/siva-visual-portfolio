@@ -9,7 +9,7 @@ export const heroData = {
   heroImageWebp: '/assets/images/hero/hero-main.webp',
   heroImageSrcSet: '/assets/images/hero/hero-main-480w.webp 480w, /assets/images/hero/hero-main-800w.webp 800w, /assets/images/hero/hero-main-1200w.webp 1200w',
   heroImageSizes: '(max-width: 640px) 420px, (max-width: 1024px) 480px, 520px',
-  badgeText: "Available for Projects",
+  badgeText: "Available for Freelance Projects",
   captionTag: "Cinematic Grading & Editing",
   captionSubtag: "Color · Frame · Rhythm",
   highlights: [
@@ -18,7 +18,7 @@ export const heroData = {
     "ALL TAMIL NADU"
   ],
   // Backward compatibility keys
-  archiveBadge: "Available for Projects",
+  archiveBadge: "Available for Freelance Projects",
   canvasTag: "Cinematic Grading & Editing",
   canvasSubtag: "Color · Frame · Rhythm",
   metaItem1: "4+ YEARS · 200+ VIDEOS",
