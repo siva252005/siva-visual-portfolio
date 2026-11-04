@@ -3,26 +3,26 @@ export const processSteps = [
   {
     number: "01",
     title: "UNDERSTAND",
-    description: "Understand the visual direction, audience, mood and purpose before touching the edit.",
-    tags: ["BRIEF", "REFERENCE", "MOOD", "STORY"]
+    description: "Discuss project requirements and understand your vision and creative references. You share raw photos, footage, and ideas, and we confirm project scope before editing begins.",
+    tags: ["BRIEF", "REFERENCES", "PLANNING"]
   },
   {
     number: "02",
     title: "BUILD",
-    description: "Shape the raw material through composition, cutting, retouching and visual structure.",
-    tags: ["CUT", "COMPOSE", "RETOUCH", "EDIT"]
+    description: "Organize the provided assets and begin editing. Apply composition, color grading, pacing, and creative direction to craft the first complete version.",
+    tags: ["EDITING", "COMPOSITION", "CREATION"]
   },
   {
     number: "03",
     title: "REFINE",
-    description: "Push color, contrast, light, detail and rhythm until every element feels intentional.",
-    tags: ["COLOR", "LIGHT", "DETAIL", "RHYTHM"]
+    description: "Share the first draft for review and collect your feedback. Adjust colors, timing, and visual details, finalizing revisions according to the agreed scope.",
+    tags: ["FEEDBACK", "ADJUSTMENTS", "POLISH"]
   },
   {
     number: "04",
     title: "DELIVER",
-    description: "Prepare polished visuals optimized for the platform, format and final viewing experience.",
-    tags: ["EXPORT", "OPTIMIZE", "FORMAT", "DELIVER"]
+    description: "Export the final edited content and deliver high-quality files in your required formats, confirming successful delivery and providing completed project files where agreed.",
+    tags: ["FINAL FILES", "EXPORT", "DELIVERY"]
   }
 ];
 
@@ -30,33 +30,34 @@ export const skillGroups = [
   {
     title: "PHOTO EDITING",
     skills: [
-      "Color Grading",
-      "Photo Retouching",
+      "Portrait Retouching",
       "Skin Tone Balance",
-      "Light & Contrast",
-      "Composition",
-      "Color Correction"
+      "Color Correction",
+      "Background Enhancement",
+      "Detail Enhancement",
+      "Cinematic Color Grading"
     ]
   },
   {
     title: "VIDEO EDITING",
     skills: [
-      "Video Editing",
-      "Cinematic Color",
-      "Cutting & Pacing",
+      "Reels & Shorts",
+      "Wedding Films",
+      "Brand Promos",
       "Speed Ramping",
       "Sound Design",
-      "Short-Form Editing"
+      "Cinematic Color Grading"
     ]
   },
   {
-    title: "VISUAL DESIGN",
+    title: "CONTENT & SOCIAL",
     skills: [
-      "Visual Storytelling",
-      "Creative Direction",
-      "Mood Development",
-      "Social Content",
-      "Visual Consistency"
+      "Instagram Reels",
+      "Social Media Videos",
+      "Promotional Content",
+      "YouTube Edits",
+      "Event Highlights",
+      "Storytelling Content"
     ]
   }
 ];

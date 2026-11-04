@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { processSteps, skillGroups, tools } from '../../data/process';
+import { scrollToSection } from '../../utils/scroll';
 
 function Process() {
   const [activeStep, setActiveStep] = useState(null);
@@ -7,13 +8,13 @@ function Process() {
   return (
     <section id="process" className="section process-section">
       <div className="container">
-        {/* Section Header */}
-        <div className="section-header text-center process-header">
+        {/* Section Header - Left Aligned */}
+        <div className="section-header process-header">
           <div className="eyebrow">
             <span>THE PROCESS</span>
           </div>
           <h2 className="section-title">
-            FROM RAW <span className="text-accent">TO REFINED.</span>
+            HOW YOUR STORY <span className="text-accent">GETS MADE.</span>
           </h2>
           <p className="section-subtitle">
             A deliberate workflow where every frame, color and cut has a purpose.
@@ -53,7 +54,6 @@ function Process() {
                   <div className="step-body">
                     <div className="step-number-row">
                       <span className="step-number">{step.number}</span>
-                      <span className="step-order-badge">PHASE 0{index + 1}</span>
                     </div>
 
                     <h3 className="step-title">{step.title}</h3>
@@ -74,6 +74,26 @@ function Process() {
           </div>
         </div>
 
+        {/* Process Closing CTA */}
+        <div className="process-cta-banner">
+          <div className="process-cta-text-wrap">
+            <h3 className="process-cta-title">Ready to Start Your Project?</h3>
+            <p className="process-cta-subtitle">Let&apos;s turn your ideas into something memorable.</p>
+          </div>
+          <a
+            href="#contact"
+            className="btn btn-primary process-cta-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              window.history.pushState({}, '', '#contact');
+              scrollToSection('#contact', true);
+            }}
+          >
+            <span>Hire Me</span>
+            <span className="process-cta-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
         {/* Skills & Tools Area */}
         <div className="skills-tools-container">
           <div className="skills-header">
@@ -85,7 +105,7 @@ function Process() {
             </h3>
           </div>
 
-          {/* 3 Skill Groups */}
+          {/* 3 Skill Groups (Equal Visual Height, 6 items each) */}
           <div className="skill-groups-grid">
             {skillGroups.map((group) => (
               <div key={group.title} className="skill-group-card">
@@ -93,7 +113,7 @@ function Process() {
                   <span className="skill-group-indicator" aria-hidden="true"></span>
                   <h4 className="skill-group-title">{group.title}</h4>
                 </div>
-                <ul className="skill-list" aria-label={`${group.title} skills`}>
+                <ul className="skill-list" aria-label={`${group.title} services`}>
                   {group.skills.map((skill) => (
                     <li key={skill} className="skill-item">
                       <span className="skill-item-bullet" aria-hidden="true">/</span>
