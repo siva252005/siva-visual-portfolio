@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { photographyCategories, photoItems } from '../../data/photography';
+import { scrollToSection } from '../../utils/scroll';
 
 function Photography() {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -20,7 +21,15 @@ function Photography() {
   const filteredItems =
     activeCategory === 'all'
       ? photoItems
-      : photoItems.filter((item) => item.category === activeCategory);
+      : photoItems.filter((item) => {
+        if (Array.isArray(item.categories)) {
+          return item.categories.includes(activeCategory);
+        }
+        if (Array.isArray(item.category)) {
+          return item.category.includes(activeCategory);
+        }
+        return item.category === activeCategory;
+      });
 
   // Open lightbox handler
   const handleOpenLightbox = (item, event) => {
@@ -111,33 +120,51 @@ function Photography() {
       <div className="container photography-container">
         {/* Editorial Section Header */}
         <div className="section-header-compact">
-          <div className="section-header-left">
-            <div className="eyebrow">
-              <span>PHOTO EDITING</span>
-            </div>
-            <h2 className="section-title">
-              FRAMES,<br />
-              <span className="text-accent">REFINED.</span>
-            </h2>
-            <p className="section-subtitle">
-              A selection of photographs transformed through color, light, composition and detail.
-            </p>
+          <div className="eyebrow">
+            <span>PHOTO EDITING</span>
           </div>
 
-          {/* Minimalist Filter Tabs */}
-          <div className="photography-filters" role="tablist" aria-label="Photography categories">
-            {photographyCategories.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                role="tab"
-                aria-selected={activeCategory === cat.id}
-                className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
-                onClick={() => handleCategorySelect(cat.id)}
-              >
-                {cat.label}
-              </button>
-            ))}
+          <h2 className="section-title photo-section-title">
+            FRAMES,<br />
+            <span className="text-accent">ELEVATED.</span>
+          </h2>
+
+          <p className="section-subtitle photography-subtitle">
+            Photographs transformed through color, light, composition and detail.
+          </p>
+
+          {/* Category Tabs & "See Before & After" Control Bar */}
+          <div className="photography-controls-bar">
+            {/* Minimalist Filter Tabs */}
+            <div className="photography-filters" role="tablist" aria-label="Photography categories">
+              {photographyCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeCategory === cat.id}
+                  className={`filter-btn ${activeCategory === cat.id ? 'active' : ''}`}
+                  onClick={() => handleCategorySelect(cat.id)}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Matching "See Before & After" Button on Far Right */}
+            <a
+              href="#before-after"
+              className="photo-header-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                window.history.pushState({}, '', '#before-after');
+                scrollToSection('#before-after', true);
+              }}
+              aria-label="Navigate to Before and After transformation section"
+            >
+              <span>See Before & After</span>
+              <span className="photo-header-btn-arrow" aria-hidden="true">→</span>
+            </a>
           </div>
         </div>
 

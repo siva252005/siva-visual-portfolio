@@ -1365,53 +1365,136 @@ video {
 
 .section-header-compact {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
-  margin-bottom: 24px;
-  gap: var(--space-lg);
-  flex-wrap: wrap;
 }
 
-.section-header-left {
-  max-width: 600px;
+.photo-section-title {
+  margin-bottom: 8px;
+  line-height: 1.12;
+}
+
+.photography-subtitle {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  max-width: 720px;
+  text-wrap: pretty;
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+/* Category Tabs & "See Before & After" Control Bar */
+.photography-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.photo-header-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 16px;
+  background-color: rgba(17, 24, 23, 0.85);
+  border: 1px solid rgba(0, 168, 150, 0.35);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-base);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #CBD5D3;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  user-select: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.photo-header-btn:hover {
+  color: #FFFFFF;
+  background-color: rgba(0, 168, 150, 0.12);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 16px rgba(0, 168, 150, 0.25);
+  transform: translateY(-1px);
+}
+
+.photo-header-btn-arrow {
+  font-size: 0.875rem;
+  line-height: 1;
+  color: var(--color-primary);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.photo-header-btn:hover .photo-header-btn-arrow {
+  transform: translateX(3px);
+  color: #00D6C4;
 }
 
 .photography-filters {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
-  background-color: var(--bg-card);
+  background-color: rgba(17, 24, 23, 0.85);
   padding: 4px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   flex-wrap: wrap;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .filter-btn {
   background: transparent;
-  border: none;
-  color: var(--text-secondary);
+  border: 1px solid transparent;
+  color: #CBD5D3;
   font-family: var(--font-family-base);
   font-size: 0.6875rem;
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--letter-spacing-eyebrow);
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+  transition: background-color var(--transition-base),
+    color var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .filter-btn:hover {
-  color: var(--text-primary);
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 168, 150, 0.25);
 }
 
 .filter-btn.active {
   background-color: var(--color-primary);
-  color: var(--text-inverse);
-  font-weight: var(--font-weight-bold);
-  box-shadow: var(--glow-subtle);
+  color: #07110F;
+  border-color: var(--color-primary);
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(0, 168, 150, 0.35);
+}
+
+.filter-btn.active:hover {
+  background-color: #00D6C4;
+  border-color: #00D6C4;
+  color: #07110F;
 }
 
 /* Photography Gallery Grid: 3 Equal-Width Columns Fitting Neatly at 65-75% Width */
@@ -5987,22 +6070,53 @@ video {
 
   /* Photography Mobile */
   .section-header-compact {
+    margin-bottom: 16px;
+  }
+
+  .photo-section-title {
+    margin-bottom: 6px;
+  }
+
+  .photography-subtitle {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-top: 0;
+    margin-bottom: 14px;
+    text-wrap: pretty;
+  }
+
+  .photography-controls-bar {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--space-lg);
+    gap: 12px;
+    margin-bottom: 18px;
   }
 
   .photography-filters {
     width: 100%;
     overflow-x: auto;
     flex-wrap: nowrap;
-    padding-bottom: 6px;
+    padding: 3px;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .photography-filters::-webkit-scrollbar {
+    display: none;
   }
 
   .filter-btn {
     white-space: nowrap;
     flex-shrink: 0;
+    height: 30px;
+    padding: 0 12px;
+    font-size: 0.625rem;
+  }
+
+  .photo-header-btn {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 0.6875rem;
   }
 
   /* Photography Mobile — 1 Column */
