@@ -26,7 +26,7 @@ const footer = {
     {
       id: "whatsapp",
       label: "WhatsApp",
-      url: import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/",
+      url: import.meta.env.VITE_WHATSAPP_URL || "https://wa.me/918778523190?text=Hi%20Siva!%20I%20visited%20your%20portfolio%20and%20I'm%20interested%20in%20discussing%20a%20project%20with%20you.",
       icon: "whatsapp"
     },
     {
