@@ -8,8 +8,8 @@ function Contact() {
     email: '',
     phone: '',
     projectType: '',
-    deadline: '',
-    budget: '',
+    budget_range: '',
+    project_duration: '',
     message: '',
     company_website: '' // Honeypot field for spam protection
   });
@@ -101,16 +101,22 @@ function Contact() {
     setIsLoading(true);
     setErrorMessage('');
 
-    // Map form fields to template variables (preserving existing EmailJS mapping + optional fields)
+    // Map form fields to template variables (matching EmailJS template variables)
     const templateParams = {
+      from_name: formData.name.trim(),
+      from_email: formData.email.trim(),
       name: formData.name.trim(),
       email: formData.email.trim(),
-      phone: (formData.phone || '').trim(),
+      phone: (formData.phone || '').trim() || 'Not provided',
       project_type: formData.projectType,
-      deadline: (formData.deadline || '').trim(),
-      budget: (formData.budget || '').trim(),
+      budget_range: (formData.budget_range || '').trim() || 'Not specified',
+      project_duration: (formData.project_duration || '').trim() || 'Not specified',
       message: formData.message.trim(),
-      reply_to: formData.email.trim()
+      reply_to: formData.email.trim(),
+
+      // Legacy fallback keys to ensure backward compatibility
+      budget: (formData.budget_range || '').trim() || 'Not specified',
+      deadline: (formData.project_duration || '').trim() || 'Not specified'
     };
 
     try {
@@ -130,8 +136,8 @@ function Contact() {
           email: '',
           phone: '',
           projectType: '',
-          deadline: '',
-          budget: '',
+          budget_range: '',
+          project_duration: '',
           message: '',
           company_website: ''
         });
@@ -158,8 +164,8 @@ function Contact() {
       email: '',
       phone: '',
       projectType: '',
-      deadline: '',
-      budget: '',
+      budget_range: '',
+      project_duration: '',
       message: '',
       company_website: ''
     });
@@ -408,43 +414,51 @@ function Contact() {
                     )}
                   </div>
 
-                  {/* Optional Fields Row: Deadline & Budget Range */}
+                  {/* Optional Fields Row: Budget Range & Project Duration */}
                   <div className="form-row-2col">
-                    {/* Optional Deadline */}
-                    <div className="form-group">
-                      <label htmlFor="contact-deadline" className="form-label">
-                        DEADLINE <span className="form-optional-tag">(OPTIONAL)</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="contact-deadline"
-                        name="deadline"
-                        value={formData.deadline}
-                        onChange={handleChange}
-                        placeholder="e.g. Within 2 weeks"
-                        className="form-input"
-                        disabled={isLoading}
-                      />
-                    </div>
-
                     {/* Optional Budget Range in INR */}
                     <div className="form-group">
-                      <label htmlFor="contact-budget" className="form-label">
+                      <label htmlFor="contact-budget-range" className="form-label">
                         BUDGET RANGE <span className="form-optional-tag">(OPTIONAL)</span>
                       </label>
                       <div className="select-wrapper">
                         <select
-                          id="contact-budget"
-                          name="budget"
-                          value={formData.budget}
+                          id="contact-budget-range"
+                          name="budget_range"
+                          value={formData.budget_range}
                           onChange={handleChange}
-                          className={`form-select ${!formData.budget ? 'select-placeholder' : ''}`}
+                          className={`form-select ${!formData.budget_range ? 'select-placeholder' : ''}`}
                           disabled={isLoading}
                         >
                           <option value="">Select Budget Range</option>
                           {contact.budgetRanges.map((range) => (
                             <option key={range} value={range}>
                               {range}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="select-chevron" aria-hidden="true">▾</span>
+                      </div>
+                    </div>
+
+                    {/* Optional Project Duration */}
+                    <div className="form-group">
+                      <label htmlFor="contact-project-duration" className="form-label">
+                        PROJECT DURATION <span className="form-optional-tag">(OPTIONAL)</span>
+                      </label>
+                      <div className="select-wrapper">
+                        <select
+                          id="contact-project-duration"
+                          name="project_duration"
+                          value={formData.project_duration}
+                          onChange={handleChange}
+                          className={`form-select ${!formData.project_duration ? 'select-placeholder' : ''}`}
+                          disabled={isLoading}
+                        >
+                          <option value="">Select Project Duration</option>
+                          {contact.projectDurations.map((duration) => (
+                            <option key={duration} value={duration}>
+                              {duration}
                             </option>
                           ))}
                         </select>
@@ -529,16 +543,16 @@ function Contact() {
                           <span className="summary-val">{submittedData.phone}</span>
                         </div>
                       )}
-                      {submittedData.budget && (
+                      {(submittedData.budget_range || submittedData.budget) && (
                         <div className="summary-row">
                           <span className="summary-key">BUDGET:</span>
-                          <span className="summary-val">{submittedData.budget}</span>
+                          <span className="summary-val">{submittedData.budget_range || submittedData.budget}</span>
                         </div>
                       )}
-                      {submittedData.deadline && (
+                      {(submittedData.project_duration || submittedData.deadline) && (
                         <div className="summary-row">
-                          <span className="summary-key">DEADLINE:</span>
-                          <span className="summary-val">{submittedData.deadline}</span>
+                          <span className="summary-key">DURATION:</span>
+                          <span className="summary-val">{submittedData.project_duration || submittedData.deadline}</span>
                         </div>
                       )}
                     </div>

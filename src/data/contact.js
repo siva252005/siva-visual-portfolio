@@ -52,6 +52,15 @@ const contact = {
     "₹500 – ₹1,000",
     "₹1,000 – ₹2,000",
     "Above ₹2,000"
+  ],
+
+  // Optional selectable project durations
+  projectDurations: [
+    "1–2 Days",
+    "3–5 Days",
+    "1 Week",
+    "2 Weeks",
+    "Flexible / Not Sure"
   ]
 };
 
