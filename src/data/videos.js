@@ -30,7 +30,7 @@ export const videos = [
   },
   {
     id: 4,
-    title: "Nee Romba Azhaga Irukanu",
+    title: "Village Frames",
     video: "/assets/videos/cinematic.mp4"
   },
   {
@@ -45,12 +45,12 @@ export const videos = [
   },
   {
     id: 7,
-    title: "The Confidence Edit",
+    title: "Promotion Videos",
     video: "/assets/videos/dental-promotion.mp4"
   },
   {
     id: 8,
-    title: "Beyond the Horizon",
+    title: "Cinematic Reels",
     video: "/assets/videos/nature-cinematic.mp4"
   },
   {
