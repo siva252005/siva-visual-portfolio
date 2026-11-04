@@ -48,10 +48,10 @@ const contact = {
 
   // Optional selectable budget ranges in INR
   budgetRanges: [
-    "Under ₹10,000",
-    "₹10,000 – ₹25,000",
-    "₹25,000 – ₹50,000",
-    "₹50,000+"
+    "Below ₹500",
+    "₹500 – ₹1,000",
+    "₹1,000 – ₹2,000",
+    "Above ₹2,000"
   ]
 };
 
