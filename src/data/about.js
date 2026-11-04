@@ -68,11 +68,18 @@ const about = {
   location: "Coimbatore, Tamil Nadu, India",
   availability: "Available for Freelance Projects",
 
-  // Image assets
-  image: "/assets/images/profile/1757828030248.jpeg",
-  imageWebp: "/assets/images/profile/1757828030248.webp",
+  // Image assets (optimized multi-format responsive delivery: AVIF, WebP, progressive JPEG)
+  image: "/assets/images/profile/1757828030248-optimized.jpeg",
+  imageWebp: "/assets/images/profile/1757828030248-680w.webp",
+  imageAvifSrcSet: "/assets/images/profile/1757828030248-340w.avif 340w, /assets/images/profile/1757828030248-680w.avif 680w, /assets/images/profile/1757828030248-1020w.avif 1020w",
   imageSrcSet: "/assets/images/profile/1757828030248-340w.webp 340w, /assets/images/profile/1757828030248-680w.webp 680w, /assets/images/profile/1757828030248-1020w.webp 1020w",
-  imageSizes: "(max-width: 640px) 340px, 340px"
+  imageSizes: "(max-width: 480px) 250px, (max-width: 768px) 290px, 340px",
+
+  // Overlapping secondary portrait thumbnail (lightweight dedicated assets)
+  overlapImage: "/assets/images/profile/1757828030248-overlap-280w.webp",
+  overlapAvifSrcSet: "/assets/images/profile/1757828030248-overlap-140w.avif 140w, /assets/images/profile/1757828030248-overlap-280w.avif 280w",
+  overlapSrcSet: "/assets/images/profile/1757828030248-overlap-140w.webp 140w, /assets/images/profile/1757828030248-overlap-280w.webp 280w",
+  overlapSizes: "(max-width: 480px) 88px, (max-width: 768px) 105px, 125px"
 };
 
 export default about;

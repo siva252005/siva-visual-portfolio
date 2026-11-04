@@ -14,11 +14,18 @@ function About() {
               {/* Main Large Vertical Portrait (9:16) */}
               <div className="about-image-wrapper">
                 <picture className="about-profile-picture">
+                  {about.imageAvifSrcSet && (
+                    <source
+                      type="image/avif"
+                      srcSet={about.imageAvifSrcSet}
+                      sizes={about.imageSizes || '(max-width: 480px) 250px, (max-width: 768px) 290px, 340px'}
+                    />
+                  )}
                   {about.imageSrcSet ? (
                     <source
                       type="image/webp"
                       srcSet={about.imageSrcSet}
-                      sizes={about.imageSizes || '(max-width: 640px) 340px, 340px'}
+                      sizes={about.imageSizes || '(max-width: 480px) 250px, (max-width: 768px) 290px, 340px'}
                     />
                   ) : about.imageWebp ? (
                     <source type="image/webp" srcSet={about.imageWebp} />
@@ -34,7 +41,7 @@ function About() {
                     onError={(e) => {
                       if (!e.target.dataset.fallbackTried) {
                         e.target.dataset.fallbackTried = 'true';
-                        e.target.src = '/assets/images/profile/1757828030248.jpg';
+                        e.target.src = '/assets/images/profile/1757828030248.jpeg';
                       } else {
                         const target = e.currentTarget || e.target;
                         const parent = target.closest('picture') || target;
@@ -61,17 +68,24 @@ function About() {
               {/* Smaller Overlapping Portrait Image at Bottom-Right Corner */}
               <div className="about-image-overlap" aria-hidden="true">
                 <picture className="about-overlap-picture">
-                  {about.imageSrcSet ? (
+                  {about.overlapAvifSrcSet && (
+                    <source
+                      type="image/avif"
+                      srcSet={about.overlapAvifSrcSet}
+                      sizes={about.overlapSizes || '(max-width: 480px) 88px, (max-width: 768px) 105px, 125px'}
+                    />
+                  )}
+                  {about.overlapSrcSet ? (
                     <source
                       type="image/webp"
-                      srcSet={about.imageSrcSet}
-                      sizes={about.imageSizes || '(max-width: 640px) 340px, 340px'}
+                      srcSet={about.overlapSrcSet}
+                      sizes={about.overlapSizes || '(max-width: 480px) 88px, (max-width: 768px) 105px, 125px'}
                     />
-                  ) : about.imageWebp ? (
-                    <source type="image/webp" srcSet={about.imageWebp} />
-                  ) : null}
+                  ) : (
+                    <source type="image/webp" srcSet={about.overlapImage || about.imageWebp} />
+                  )}
                   <img
-                    src={about.image}
+                    src={about.overlapImage || about.image}
                     alt=""
                     className="about-overlap-img"
                     width="125"
@@ -81,7 +95,7 @@ function About() {
                     onError={(e) => {
                       if (!e.target.dataset.fallbackTried) {
                         e.target.dataset.fallbackTried = 'true';
-                        e.target.src = '/assets/images/profile/1757828030248.jpg';
+                        e.target.src = '/assets/images/profile/1757828030248.jpeg';
                       } else {
                         const target = e.currentTarget || e.target;
                         const parent = target.closest('picture') || target;

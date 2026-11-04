@@ -23,8 +23,8 @@ const contact = {
     {
       id: "instagram",
       label: "Instagram",
-      sublabel: "DM & Follow",
-      url: import.meta.env.VITE_INSTAGRAM_URL || "https://www.instagram.com/",
+      sublabel: "@siva_.official___",
+      url: import.meta.env.VITE_INSTAGRAM_URL || "https://www.instagram.com/siva_.official___/",
       icon: "instagram"
     },
     {

@@ -20,7 +20,7 @@ const footer = {
     {
       id: "instagram",
       label: "Instagram",
-      url: import.meta.env.VITE_INSTAGRAM_URL || "https://www.instagram.com/",
+      url: import.meta.env.VITE_INSTAGRAM_URL || "https://www.instagram.com/siva_.official___/",
       icon: "instagram"
     },
     {
